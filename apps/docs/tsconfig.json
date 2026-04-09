@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
+    "rootDir": ".",
+    "noEmit": true,
+    "types": ["node"],
+    "allowJs": true
+  },
+  "include": [".vitepress/**/*.ts", ".vitepress/**/*.vue", ".vitepress/**/*.js"],
+  "exclude": ["node_modules", ".vitepress/cache", ".vitepress/dist"]
+}

@@ -11,8 +11,9 @@
   },
   "homepage": "https://mygithub05253.github.io/Claude-Code-Study/",
   "scripts": {
-    "dev": "pnpm --filter @claude-code-study/docs dev",
-    "build": "pnpm -r run build",
+    "dev": "pnpm sync-docs && pnpm --filter @claude-code-study/docs dev",
+    "build": "pnpm sync-docs && pnpm -r run build",
+    "build:docs": "pnpm sync-docs && pnpm --filter @claude-code-study/docs build",
     "parse": "tsx packages/parser/src/cli.ts --output content/raw/skills.json",
     "explain": "pnpm --filter @claude-code-study/explainer run generate",
     "regenerate": "tsx scripts/regenerate.ts",

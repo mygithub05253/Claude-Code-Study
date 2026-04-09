@@ -75,17 +75,23 @@ claude-code-study/
 # 의존성 설치
 pnpm install
 
-# 로컬 파서 실행 (Phase 1 완료 후)
+# 로컬 파서 실행 (~/.claude/skills 전체 → content/raw/skills.json)
 pnpm parse
 
-# 한국어 해설 생성 (Phase 2, MVP는 Claude Code CLI 세션에서 수동)
-# pnpm explain
+# 한국어 해설 생성 프롬프트 출력 (MVP는 Claude Code CLI 세션에서 수동 실행)
+pnpm explain
 
-# 문서 사이트 로컬 개발 서버 (Phase 3 완료 후)
+# content/ko → apps/docs/skills 복사 (dev/build에서 자동 수행됨)
+pnpm sync-docs
+
+# 문서 사이트 로컬 개발 서버 (http://localhost:5173)
 pnpm dev
 
-# 빌드
+# 전체 빌드 (패키지 + 문서 사이트)
 pnpm build
+
+# 문서 사이트만 빌드 (sync-docs 자동 포함)
+pnpm build:docs
 ```
 
 ## 프로젝트 진행 상태
@@ -98,8 +104,8 @@ pnpm build
 | 0c | CI 워크플로우 | ✅ 완료 |
 | 1 | Parser 구현 | ✅ 완료 (48/48 파싱) |
 | 2 | 한국어 해설 생성 (P0 10개) | ✅ 완료 |
-| 3 | VitePress 사이트 MVP | ⏳ 대기 |
-| 4 | GitHub Pages 배포 | ⏳ 대기 |
+| 3 | VitePress 사이트 MVP | ✅ 완료 |
+| 4 | GitHub Pages 배포 | ⏳ 진행 중 |
 | 5 | P1: 나머지 38개 + 영어 | ⏳ 대기 |
 | 6 | P2: 외부 레포 + 일본어 + CLI | ⏳ 대기 |
 
