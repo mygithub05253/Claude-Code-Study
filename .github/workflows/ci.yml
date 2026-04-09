@@ -20,8 +20,7 @@ jobs:
 
       - name: pnpm 설치
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        # version은 package.json의 packageManager 필드에서 자동 감지
 
       - name: Node.js 설치
         uses: actions/setup-node@v4
