@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "pnpm --filter @claude-code-study/docs dev",
     "build": "pnpm -r run build",
-    "parse": "pnpm --filter @claude-code-study/parser run cli",
+    "parse": "tsx packages/parser/src/cli.ts --output content/raw/skills.json",
     "explain": "pnpm --filter @claude-code-study/explainer run generate",
     "regenerate": "tsx scripts/regenerate.ts",
     "sync-docs": "tsx scripts/sync-content-to-docs.ts",

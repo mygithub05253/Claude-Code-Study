@@ -27,6 +27,7 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+bash.exe.stackdump
 
 # Claude Code 로컬 설정 (민감 가능)
 .claude/settings.local.json

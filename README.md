@@ -96,7 +96,7 @@ pnpm build
 | 0a | 레포 연결 + PRD + CLAUDE.md + 메모리 | ✅ 완료 |
 | 0b | 모노레포 스캐폴딩 | ✅ 완료 |
 | 0c | CI 워크플로우 | ✅ 완료 |
-| 1 | Parser 구현 | ⏳ 대기 |
+| 1 | Parser 구현 | ✅ 완료 (48/48 파싱) |
 | 2 | 한국어 해설 생성 (P0 10개) | ⏳ 대기 |
 | 3 | VitePress 사이트 MVP | ⏳ 대기 |
 | 4 | GitHub Pages 배포 | ⏳ 대기 |
