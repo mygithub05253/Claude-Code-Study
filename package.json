@@ -1,0 +1,41 @@
+{
+  "name": "claude-code-study",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Claude Code 학습 & 커스터마이징 허브 (한국어 우선, VitePress 기반)",
+  "license": "MIT",
+  "author": "mygithub05253",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mygithub05253/Claude-Code-Study.git"
+  },
+  "homepage": "https://mygithub05253.github.io/Claude-Code-Study/",
+  "scripts": {
+    "dev": "pnpm --filter @claude-code-study/docs dev",
+    "build": "pnpm -r run build",
+    "parse": "pnpm --filter @claude-code-study/parser run cli",
+    "explain": "pnpm --filter @claude-code-study/explainer run generate",
+    "regenerate": "tsx scripts/regenerate.ts",
+    "sync-docs": "tsx scripts/sync-content-to-docs.ts",
+    "test": "pnpm -r run test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r run typecheck"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.20.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@10.30.3"
+}

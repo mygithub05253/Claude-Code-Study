@@ -1,0 +1,11 @@
+node_modules
+dist
+build
+.vitepress/cache
+.vitepress/dist
+content/raw
+coverage
+pnpm-lock.yaml
+
+# 마크다운은 수동 작성/Claude 생성 문서가 많아 prettier가 건드리지 않는다
+*.md
