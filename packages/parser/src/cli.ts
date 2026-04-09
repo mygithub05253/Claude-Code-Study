@@ -109,9 +109,7 @@ async function main(): Promise<void> {
       // 파일 경로는 사용자 민감 정보를 일부 포함할 수 있으므로
       // 출력 JSON에는 홈 디렉토리를 `~`로 대체한다.
       const homeDir = os.homedir();
-      const redactedPath = file.startsWith(homeDir)
-        ? "~" + file.slice(homeDir.length)
-        : file;
+      const redactedPath = file.startsWith(homeDir) ? "~" + file.slice(homeDir.length) : file;
       result.skills.push({
         ...skill,
         sourcePath: redactedPath,

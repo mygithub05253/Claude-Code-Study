@@ -47,7 +47,10 @@ function parseArgs(argv: string[]): GenerateOptions {
       options.contentRoot = path.resolve(argv[i + 1] ?? "");
       i += 1;
     } else if (arg === "--only" && argv[i + 1]) {
-      options.only = (argv[i + 1] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+      options.only = (argv[i + 1] ?? "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
       i += 1;
     } else if (arg === "--prompts-out" && argv[i + 1]) {
       options.promptsOut = path.resolve(argv[i + 1] ?? "");
@@ -82,8 +85,7 @@ async function main(): Promise<void> {
   for (const skill of targetSkills) {
     const outputPath = getExplanationOutputPath(options.contentRoot, skill.name);
     const needsRegen =
-      options.force ||
-      (await shouldRegenerate(outputPath, skill.contentHash, PROMPT_VERSION));
+      options.force || (await shouldRegenerate(outputPath, skill.contentHash, PROMPT_VERSION));
 
     if (!needsRegen) {
       skipCount += 1;
@@ -103,9 +105,7 @@ async function main(): Promise<void> {
     }
   }
 
-  console.log(
-    `[explainer] 완료: 재생성 ${regenerateCount}개 / 스킵 ${skipCount}개`,
-  );
+  console.log(`[explainer] 완료: 재생성 ${regenerateCount}개 / 스킵 ${skipCount}개`);
   console.log(
     `[explainer] MVP는 수동 모드. Claude Code 세션에서 프롬프트를 실행하여 해설을 작성해 주세요.`,
   );

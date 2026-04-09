@@ -114,15 +114,9 @@ describe("parseSkillContent (섹션 분할)", () => {
   });
 
   it("같은 내용은 같은 해시를 반환한다", () => {
-    const content = [
-      "---",
-      "name: test",
-      "description: 테스트",
-      "---",
-      "",
-      "# Title",
-      "본문",
-    ].join("\n");
+    const content = ["---", "name: test", "description: 테스트", "---", "", "# Title", "본문"].join(
+      "\n",
+    );
 
     const a = parseSkillContent(content, "/fake/test/SKILL.md");
     const b = parseSkillContent(content, "/fake/test/SKILL.md");
@@ -130,13 +124,9 @@ describe("parseSkillContent (섹션 분할)", () => {
   });
 
   it("디렉토리 이름이 있으면 frontmatter.name을 덮어쓴다", () => {
-    const content = [
-      "---",
-      "name: different-name",
-      "description: 테스트",
-      "---",
-      "# Title",
-    ].join("\n");
+    const content = ["---", "name: different-name", "description: 테스트", "---", "# Title"].join(
+      "\n",
+    );
 
     const skill = parseSkillContent(content, "/fake/actual-dir/SKILL.md");
     expect(skill.name).toBe("actual-dir");

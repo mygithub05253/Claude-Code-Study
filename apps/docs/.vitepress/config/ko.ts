@@ -18,7 +18,10 @@ export const koConfig: { themeConfig: DefaultTheme.Config } = {
         items: [
           { text: "GitHub 레포", link: "https://github.com/mygithub05253/Claude-Code-Study" },
           { text: "공식 문서", link: "https://docs.claude.com/claude-code" },
-          { text: "PRD", link: "https://github.com/mygithub05253/Claude-Code-Study/blob/main/docs/PRD.md" },
+          {
+            text: "PRD",
+            link: "https://github.com/mygithub05253/Claude-Code-Study/blob/main/docs/PRD.md",
+          },
         ],
       },
     ],
@@ -58,8 +61,7 @@ export const koConfig: { themeConfig: DefaultTheme.Config } = {
     externalLinkIcon: true,
 
     editLink: {
-      pattern:
-        "https://github.com/mygithub05253/Claude-Code-Study/edit/main/content/ko/:path",
+      pattern: "https://github.com/mygithub05253/Claude-Code-Study/edit/main/content/ko/:path",
       text: "GitHub에서 이 페이지 수정하기",
     },
   },
