@@ -30,6 +30,22 @@ importers:
         specifier: ^8.20.0
         version: 8.58.1(eslint@9.39.4)(typescript@5.9.3)
 
+  packages/explainer:
+    dependencies:
+      '@claude-code-study/parser':
+        specifier: workspace:*
+        version: link:../parser
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.19.17
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.17)
+
   packages/parser:
     dependencies:
       fast-glob:

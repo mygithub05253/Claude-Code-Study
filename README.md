@@ -97,24 +97,28 @@ pnpm build
 | 0b | 모노레포 스캐폴딩 | ✅ 완료 |
 | 0c | CI 워크플로우 | ✅ 완료 |
 | 1 | Parser 구현 | ✅ 완료 (48/48 파싱) |
-| 2 | 한국어 해설 생성 (P0 10개) | ⏳ 대기 |
+| 2 | 한국어 해설 생성 (P0 10개) | ✅ 완료 |
 | 3 | VitePress 사이트 MVP | ⏳ 대기 |
 | 4 | GitHub Pages 배포 | ⏳ 대기 |
 | 5 | P1: 나머지 38개 + 영어 | ⏳ 대기 |
 | 6 | P2: 외부 레포 + 일본어 + CLI | ⏳ 대기 |
 
-### P0 대상 10개 스킬
+### P0 대상 10개 스킬 (한국어 해설 완료)
 
-1. [brainstorming](https://github.com/mygithub05253/Claude-Code-Study/tree/main/content/ko/skills/brainstorming.md)
-2. writing-plans
-3. executing-plans
-4. ship
-5. review
-6. investigate
-7. using-superpowers
-8. writing-skills
-9. test-driven-development
-10. systematic-debugging
+| # | 스킬 | 해설 |
+|---|---|---|
+| 1 | brainstorming | [content/ko/skills/brainstorming.md](./content/ko/skills/brainstorming.md) |
+| 2 | writing-plans | [content/ko/skills/writing-plans.md](./content/ko/skills/writing-plans.md) |
+| 3 | executing-plans | [content/ko/skills/executing-plans.md](./content/ko/skills/executing-plans.md) |
+| 4 | ship | [content/ko/skills/ship.md](./content/ko/skills/ship.md) |
+| 5 | review | [content/ko/skills/review.md](./content/ko/skills/review.md) |
+| 6 | investigate | [content/ko/skills/investigate.md](./content/ko/skills/investigate.md) |
+| 7 | using-superpowers | [content/ko/skills/using-superpowers.md](./content/ko/skills/using-superpowers.md) |
+| 8 | writing-skills | [content/ko/skills/writing-skills.md](./content/ko/skills/writing-skills.md) |
+| 9 | test-driven-development | [content/ko/skills/test-driven-development.md](./content/ko/skills/test-driven-development.md) |
+| 10 | systematic-debugging | [content/ko/skills/systematic-debugging.md](./content/ko/skills/systematic-debugging.md) |
+
+각 해설은 다음 6개 섹션을 포함한다: **한 줄 요약 / 언제 사용하나요? / 핵심 개념 / 실전 예제 (대학생 관점) / 학습 포인트 / 원본과의 차이**. 예제는 Next.js 15 + TypeScript 기반 대학생 프로젝트 맥락으로 구성되어 있다.
 
 ## 기여 / 라이선스
 

@@ -1,0 +1,24 @@
+{
+  "name": "@claude-code-study/explainer",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Claude Code 스킬의 한국어 해설 생성기 (MVP는 프롬프트 + 캐시만 제공, 호출은 Claude Code CLI 세션에서 수동)",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "generate": "tsx src/generate.ts"
+  },
+  "dependencies": {
+    "@claude-code-study/parser": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}
