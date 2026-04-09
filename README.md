@@ -3,10 +3,11 @@
 > 한국 대학생 관점에서 Claude Code의 Skills / Agents / MCP / Plugins를 한국어로 이해하고, 커스터마이징한 뒤, 한/영/일 3개 언어 문서 사이트로 공개하는 오픈소스 학습 허브.
 
 [![CI](https://github.com/mygithub05253/Claude-Code-Study/actions/workflows/ci.yml/badge.svg)](https://github.com/mygithub05253/Claude-Code-Study/actions/workflows/ci.yml)
+[![Deploy Pages](https://github.com/mygithub05253/Claude-Code-Study/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/mygithub05253/Claude-Code-Study/actions/workflows/deploy-pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Language: Korean](https://img.shields.io/badge/Language-Korean-blue.svg)](#)
 
-📖 **배포 사이트 (예정)**: <https://mygithub05253.github.io/Claude-Code-Study/>
+📖 **배포 사이트**: <https://mygithub05253.github.io/Claude-Code-Study/>
 
 ---
 
@@ -105,7 +106,7 @@ pnpm build:docs
 | 1 | Parser 구현 | ✅ 완료 (48/48 파싱) |
 | 2 | 한국어 해설 생성 (P0 10개) | ✅ 완료 |
 | 3 | VitePress 사이트 MVP | ✅ 완료 |
-| 4 | GitHub Pages 배포 | ⏳ 진행 중 |
+| 4 | GitHub Pages 배포 | ✅ 완료 |
 | 5 | P1: 나머지 38개 + 영어 | ⏳ 대기 |
 | 6 | P2: 외부 레포 + 일본어 + CLI | ⏳ 대기 |
 
