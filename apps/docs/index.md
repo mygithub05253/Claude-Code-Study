@@ -51,6 +51,12 @@ features:
 
 ## 시작하기
 
-- [스킬 해설 목록](/skills/) — P0 10개 핵심 스킬부터 시작
-- [GitHub 레포](https://github.com/mygithub05253/Claude-Code-Study) — 본 사이트의 소스와 PRD
+- [스킬 해설](/skills/) — P0 10개 핵심 스킬
+- [MCP 서버](/mcp/) — Claude Code 외부 도구 연결
+- [Hooks 레시피](/hooks/) — 자동화 스니펫
+- [Agents 패턴](/agents/) — Sub-agent / Multi-agent
+- [GitHub 레포 큐레이션](/repos/) — Stars 10K+ 선별
+- [Use Cases](/use-cases/) — 대학생 실무 카테고리
+- [My Collection](/my-collection/) — 커스텀 리소스
+- [프롬프트 모음](/prompts/) — 복사-붙여넣기용 템플릿
 - [Claude Code 공식 문서](https://docs.claude.com/claude-code) — 영어 원문 레퍼런스

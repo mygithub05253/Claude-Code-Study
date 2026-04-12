@@ -16,7 +16,24 @@ export const koConfig: { themeConfig: DefaultTheme.Config } = {
       {
         text: "리소스",
         items: [
-          { text: "GitHub 레포", link: "https://github.com/mygithub05253/Claude-Code-Study" },
+          { text: "MCP 서버", link: "/mcp/" },
+          { text: "Hooks", link: "/hooks/" },
+          { text: "Agents", link: "/agents/" },
+          { text: "GitHub 레포", link: "/repos/" },
+        ],
+      },
+      {
+        text: "활용",
+        items: [
+          { text: "Use Cases", link: "/use-cases/" },
+          { text: "My Collection", link: "/my-collection/" },
+          { text: "프롬프트 모음", link: "/prompts/" },
+        ],
+      },
+      {
+        text: "프로젝트",
+        items: [
+          { text: "GitHub 저장소", link: "https://github.com/mygithub05253/Claude-Code-Study" },
           { text: "공식 문서", link: "https://docs.claude.com/claude-code" },
           {
             text: "PRD",

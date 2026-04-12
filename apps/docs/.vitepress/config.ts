@@ -8,7 +8,7 @@
 import { defineConfig } from "vitepress";
 
 import { koConfig } from "./config/ko.js";
-import { generateSkillSidebar } from "./sidebar.js";
+import { generateSectionSidebar, generateSkillSidebar } from "./sidebar.js";
 
 const base = "/Claude-Code-Study/";
 
@@ -38,6 +38,13 @@ export default defineConfig({
     ...koConfig.themeConfig,
     sidebar: {
       "/skills/": generateSkillSidebar(),
+      "/mcp/": generateSectionSidebar("mcp", "MCP 서버"),
+      "/hooks/": generateSectionSidebar("hooks", "Hooks 레시피"),
+      "/agents/": generateSectionSidebar("agents", "Agents 패턴"),
+      "/repos/": generateSectionSidebar("repos", "GitHub 레포"),
+      "/use-cases/": generateSectionSidebar("use-cases", "Use Cases"),
+      "/my-collection/": generateSectionSidebar("my-collection", "My Collection"),
+      "/prompts/": generateSectionSidebar("prompts", "프롬프트 모음"),
     },
     search: {
       provider: "local",
