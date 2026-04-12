@@ -16,16 +16,51 @@
 - 해설/번역 결과는 `git commit`으로 캐싱, 해시 기반 증분 재생성
 
 ## 디렉토리 규칙
-- `apps/docs/` — VitePress 사이트 (빌드 산출물 전용)
+- `apps/docs/` — VitePress 사이트 (빌드 산출물 전용, `sync-docs`로 주입)
 - `packages/parser/` — SKILL.md → JSON 파서
 - `packages/explainer/` — JSON → 한국어 해설 MD
 - `packages/translator/` — (P1) 한국어 → 영/일 번역
 - `packages/shared/` — 공통 타입/상수
 - `content/raw/` — 파서 출력 (자동 생성, 커밋 포함)
 - `content/ko/` — 한국어 해설 (수동+Claude 생성, 커밋)
+  - `skills/` — 48개 공식 Skills 해설
+  - `mcp/` — MCP 서버 해설
+  - `hooks/` — Hooks 레시피
+  - `agents/` — Sub-agent / Multi-agent 패턴
+  - `repos/` — GitHub 인기 레포 큐레이션
+  - `use-cases/` — 대학생 실무 카테고리별 활용법
+  - `my-collection/` — 사용자 변형·커스텀 리소스
+  - `prompts/` — 범용 프롬프트 템플릿
+  - `_templates/` — 내부 참조용 템플릿 (빌드 제외)
 - `content/en/`, `content/ja/` — (P1/P2)
 - `scripts/` — 파이프라인 스크립트
 - `docs/` — 개발 문서 (PRD, ADR). 사이트 빌드에 포함되지 않음
+
+## 콘텐츠 작성 원칙 (필수)
+모든 해설 페이지는 다음 6섹션 구조를 따른다:
+1. 한 줄 요약
+2. 왜 대학생에게 유용한가 (시나리오)
+3. 핵심 개념 / 작동 원리
+4. 실전 예제 (동아리 공지 게시판 맥락 통일)
+5. 학습 포인트 / 흔한 함정
+6. 원본 링크 & 저작권 (표준 테이블)
+
+### 파일 네이밍 규칙
+- `content/ko/skills/[skill-name].md`
+- `content/ko/mcp/[server-name].md`
+- `content/ko/hooks/[recipe-name].md`
+- `content/ko/agents/[pattern-name].md`
+- `content/ko/repos/[repo-name].md`
+- `content/ko/use-cases/[category]/[topic].md`
+- `content/ko/my-collection/[type]/[name].md`
+- `content/ko/prompts/[prompt-name].md`
+
+### 저작권 표기 의무
+모든 해설 페이지는 다음을 **반드시** 포함한다:
+- Frontmatter: `source_url`, `source_author`, `license`, `last_reviewed`, `tags`, `category`
+- 본문 하단: 원본 URL / 작성자 / 라이선스 / 해설 작성일 표준 테이블
+- 표준 템플릿: `content/ko/_templates/attribution.md` 참조
+- 외부 코드 원본 복제 금지, 링크 + 한국어 요약만 허용
 
 ## Git / Push 정책 (필수 준수)
 - **Push 시 README.md 수정 필수** — 관련 변경을 다음 섹션에 반영:
