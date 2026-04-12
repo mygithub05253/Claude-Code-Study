@@ -108,7 +108,17 @@ pnpm build:docs
 | 3 | VitePress 사이트 MVP | ✅ 완료 |
 | 4 | GitHub Pages 배포 | ✅ 완료 |
 | **5** | **P1: 38개 스킬 + 비스킬 콘텐츠** | ✅ **완료** |
-| 6 | P2: 외부 레포 + 일본어 + CLI | ⏳ 대기 |
+| **6** | **카드 UI + Mermaid + 생태계 탐색 허브** | 🔄 **진행 중** |
+| 7 | P2: 영어 번역 + 일본어 + CLI | ⏳ 대기 |
+
+### Phase 6 달성 (6-A + 6-B)
+
+- [x] VitePress 커스텀 테마 (CardGrid.vue, CardItem.vue, card.css)
+- [x] vitepress-plugin-mermaid 설치 + withMermaid 설정
+- [x] 생태계 탐색 허브 페이지 (GitHub / Smithery.ai / Claude Skills Directory)
+- [x] 48개 스킬 카드 그리드 인덱스 (8개 그룹)
+- [x] MCP / Hooks / Agents / Repos / Use-Cases / My-Collection / Prompts 인덱스 카드화
+- [x] 홈페이지 features + 현황 업데이트
 
 ### Phase 5 달성 (P1)
 

@@ -20,6 +20,7 @@ export const koConfig: { themeConfig: DefaultTheme.Config } = {
           { text: "Hooks", link: "/hooks/" },
           { text: "Agents", link: "/agents/" },
           { text: "GitHub 레포", link: "/repos/" },
+          { text: "생태계 탐색", link: "/ecosystem/" },
         ],
       },
       {

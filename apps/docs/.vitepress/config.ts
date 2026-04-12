@@ -6,13 +6,14 @@
  */
 
 import { defineConfig } from "vitepress";
+import { withMermaid } from "vitepress-plugin-mermaid";
 
 import { koConfig } from "./config/ko.js";
 import { generateSectionSidebar, generateSkillSidebar } from "./sidebar.js";
 
 const base = "/Claude-Code-Study/";
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   base,
   lang: "ko-KR",
   title: "Claude Code 학습 허브",
@@ -45,6 +46,7 @@ export default defineConfig({
       "/use-cases/": generateSectionSidebar("use-cases", "Use Cases"),
       "/my-collection/": generateSectionSidebar("my-collection", "My Collection"),
       "/prompts/": generateSectionSidebar("prompts", "프롬프트 모음"),
+      "/ecosystem/": generateSectionSidebar("ecosystem", "생태계 탐색"),
     },
     search: {
       provider: "local",
@@ -71,4 +73,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

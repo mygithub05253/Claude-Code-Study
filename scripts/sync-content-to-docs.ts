@@ -27,6 +27,7 @@ const SECTIONS = [
   "use-cases",
   "my-collection",
   "prompts",
+  "ecosystem",
 ] as const;
 
 async function exists(p: string): Promise<boolean> {
