@@ -107,18 +107,18 @@ pnpm build:docs
 | 2 | 한국어 해설 생성 (P0 10개) | ✅ 완료 |
 | 3 | VitePress 사이트 MVP | ✅ 완료 |
 | 4 | GitHub Pages 배포 | ✅ 완료 |
-| **5** | **P1: 38개 스킬 + 비스킬 콘텐츠** | 🚀 **진행 중** |
+| **5** | **P1: 38개 스킬 + 비스킬 콘텐츠** | ✅ **완료** |
 | 6 | P2: 외부 레포 + 일본어 + CLI | ⏳ 대기 |
 
-### Phase 5 목표 (P1)
+### Phase 5 달성 (P1)
 
-- [ ] 나머지 38개 스킬 한국어 해설 완성 (현재 10/48)
-- [ ] Hooks 레시피 5개
-- [ ] Agents 패턴 4개
-- [ ] MCP 서버 5개
-- [ ] GitHub 레포 큐레이션 3개
-- [ ] Use Cases 3~5개
-- [ ] VitePress 8개 섹션 라우팅 (완료)
+- [x] 48개 스킬 한국어 해설 전체 완성 (10 → 48)
+- [x] Hooks 레시피 5개 (auto-format, block-dangerous, notify-complete, auto-test, work-log)
+- [x] Agents 패턴 4개 (explore-agent, plan-agent, parallel-dispatch, gstack-roles)
+- [x] MCP 서버 5개 (sequential-thinking, github-mcp, filesystem-mcp, fetch-mcp, supabase-mcp)
+- [x] GitHub 레포 큐레이션 3개
+- [x] Use Cases 4개 (과제 개발, 코드 리뷰, 디버깅, 팀 협업)
+- [x] VitePress 8개 섹션 라우팅
 
 ### P0 대상 10개 스킬 (한국어 해설 완료)
 
