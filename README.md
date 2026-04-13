@@ -109,19 +109,19 @@ pnpm build:docs
 | 4 | GitHub Pages 배포 | ✅ 완료 |
 | **5** | **P1: 38개 스킬 + 비스킬 콘텐츠** | ✅ **완료** |
 | **6** | **카드 UI + Mermaid + 7섹션 재구성 + 생태계 탐색 허브** | ✅ **완료** |
-| **7** | **다국어(i18n) + MCP 6개 설치 + 콘텐츠 확장** | 🔄 **진행 중** |
+| **7** | **다국어(i18n) + MCP 6개 설치 + 콘텐츠 확장** | ✅ **완료** |
 | 8 | 일본어 번역 + CLI + npm 배포 | ⏳ 대기 |
 
-### Phase 7 달성 (7-A ~ 7-H, 진행 중)
+### Phase 7 달성 (7-A ~ 7-H)
 
 - [x] **7-A**: MCP 서버 6개 설치 (context7, sequential-thinking, playwright, filesystem, memory, github)
 - [x] **7-B**: VitePress i18n 인프라 (config/en.ts, locales 블록, sidebar locale 파라미터)
 - [x] **7-C**: sync-content-to-docs 다국어 확장 (`LOCALES = ['ko', 'en']`)
 - [x] **7-D**: deploy-pages.yml `content/en/**` 트리거 경로 추가
+- [x] **7-E**: 영어 번역 — Skills 48개 (병렬 에이전트 6그룹)
+- [x] **7-F**: 영어 번역 — 비스킬 37개 (병렬 에이전트 4그룹)
 - [x] **7-G**: 빈 섹션 콘텐츠 신규 작성 (my-collection 5개 + prompts 6개)
 - [x] **7-H**: sitemap 설정 + robots.txt + PRD 체크리스트 전체 갱신
-- [ ] **7-E**: 영어 번역 — Skills 48개 (진행 중)
-- [ ] **7-F**: 영어 번역 — 비스킬 32개 (진행 중)
 
 ### Phase 6 달성 (6-A ~ 6-F)
 
