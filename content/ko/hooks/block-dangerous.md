@@ -10,29 +10,25 @@ tags: ["hooks", "자동화", "보안", "안전", "차단", "PreToolUse"]
 
 # 위험 명령어 차단 훅 (block-dangerous)
 
-## 한 줄 요약
-
-`PreToolUse` 훅으로 `rm -rf`, `DROP TABLE`, `git push --force` 같은 파괴적 명령어를 Claude가 실행하기 전에 사전 차단한다.
-
-## 언제 사용하나요?
-
-- Claude가 실수로 데이터베이스 테이블을 삭제하거나 프로덕션 데이터를 날릴 위험이 있을 때
-- `main` 브랜치에 force push가 발생하는 것을 완전히 막고 싶을 때
-- 팀 프로젝트에서 Claude가 실행할 수 있는 명령어의 범위를 제한하고 싶을 때
-- 초보 개발자가 Claude를 사용하는 환경에서 안전망을 제공하고 싶을 때
-
-## 핵심 개념
+## 핵심 개념 / 작동 원리
 
 `PreToolUse` 훅은 Claude가 도구를 **실행하기 직전**에 트리거된다. 훅에서 `exit code 2`로 종료하면 Claude는 해당 도구 실행을 **완전히 거부**하고, stderr에 출력된 메시지를 사용자에게 전달한다.
 
-동작 흐름:
-```
-Claude → Bash 도구로 명령어 실행 시도
-  → PreToolUse 훅 트리거
-    → 명령어가 위험 패턴 목록에 해당?
-      → 예: stderr에 경고 메시지 출력 → exit 2 (차단)
-      → 아니오: exit 0 (허용)
-  → Claude: 차단된 경우 사용자에게 대안 제안
+```mermaid
+flowchart TD
+    A[Claude가 Bash 도구 실행 시도] --> B[PreToolUse 훅 트리거]
+    B --> C[block-dangerous.sh 실행]
+    C --> D{위험 패턴 검사}
+    D -->|rm -rf 감지| E[stderr: 차단 메시지 출력]
+    D -->|DROP TABLE 감지| E
+    D -->|git push --force 감지| E
+    D -->|git reset --hard 감지| E
+    D -->|.env 파일 삭제 감지| E
+    D -->|전역 패키지 설치 감지| E
+    D -->|패턴 없음| F[exit 0 → 허용]
+    E --> G[exit 2 → 도구 실행 완전 차단]
+    G --> H[Claude: 차단 이유 인식 후 대안 제시]
+    F --> I[Claude: 명령어 정상 실행]
 ```
 
 `exit code` 의미:
@@ -40,7 +36,11 @@ Claude → Bash 도구로 명령어 실행 시도
 - `2`: 차단 — 도구 실행을 중단하고 Claude에 거부 이유를 전달한다
 - `1`: 오류 — 훅 자체에 오류가 발생했음을 알린다 (실행은 계속될 수 있음)
 
-## 실전 예제
+## 한 줄 요약
+
+`PreToolUse` 훅으로 `rm -rf`, `DROP TABLE`, `git push --force` 같은 파괴적 명령어를 Claude가 실행하기 전에 사전 차단한다.
+
+## 프로젝트에 도입하기
 
 **상황**: Next.js 15 "동아리 공지 게시판" 프로젝트에서 Claude가 실수로 데이터를 삭제하거나 강제 push하는 것을 방지
 
@@ -128,6 +128,8 @@ fi
 exit 0
 ```
 
+## 실전 예제 (대학생 관점)
+
 ### 실제 차단 시나리오
 
 **시나리오 1 — 실수로 전체 삭제 시도**
@@ -155,13 +157,25 @@ git push origin main --force
 # → [block-dangerous] 거부: 'git push --force'는 허용되지 않습니다.
 ```
 
-## 학습 포인트
+**시나리오 3 — DB 삭제 차단**
+```bash
+psql -c "DROP TABLE notices;"
+# → [block-dangerous] 거부: SQL DROP/TRUNCATE 명령어는 허용되지 않습니다.
+```
+
+## 학습 포인트 / 흔한 함정
 
 - **exit 2의 의미**: exit 0(허용), exit 1(오류), exit 2(차단) 세 가지를 명확히 구분한다. exit 2만이 도구 실행을 완전히 막는다.
 - **패턴 오탐(False Positive) 주의**: `rm -rf node_modules`처럼 실제로 허용해야 할 명령어가 차단될 수 있다. 패턴을 너무 넓게 잡지 말고, 필요하다면 허용 목록(allowlist)도 함께 관리한다.
 - **CLAUDE_TOOL_INPUT_COMMAND 환경변수**: Claude가 Bash 도구로 실행하려는 명령어 전체 문자열이 이 변수에 담긴다. 공식 문서에서 훅별로 주입되는 환경변수를 확인해야 한다.
 - **파이프라인 명령어 탐지 한계**: `rm -rf /`를 `rm -r/ -f`처럼 분리하거나 변수 치환으로 우회하는 경우 탐지가 어렵다. 완벽한 보안 도구가 아니라 "실수 방지" 안전망으로 인식할 것.
 - **팀 공유 설정**: `.claude/settings.json`을 git에 커밋하면 팀 전원에게 동일한 안전망이 적용된다.
+
+## 관련 리소스
+
+- [자동 포맷 훅](./auto-format.md) — 파일 저장 후 자동으로 코드를 포맷하는 PostToolUse 훅 레시피입니다.
+- [작업 내역 로그 훅](./work-log.md) — 차단된 명령어를 포함해 Claude의 모든 도구 사용 내역을 기록합니다.
+- [supabase-mcp](../mcp/supabase-mcp.md) — Supabase MCP와 함께 사용하면 DROP TABLE 차단 훅이 더욱 중요해집니다.
 
 ---
 

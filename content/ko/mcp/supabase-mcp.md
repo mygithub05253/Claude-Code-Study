@@ -10,20 +10,26 @@ tags: ["mcp", "supabase", "database", "postgresql", "rls", "sql"]
 
 # supabase-mcp
 
-## 한 줄 요약
-
-Supabase 프로젝트를 Claude에서 직접 관리할 수 있는 MCP 서버로, 테이블 조회·RLS 정책 확인·SQL 실행을 대화 중에 처리합니다.
-
-## 언제 사용하나요?
-
-- 데이터베이스 스키마를 Claude에게 설명 없이 자동으로 인식시키고 싶을 때
-- Supabase 대시보드를 열지 않고 Claude와 대화하면서 테이블 데이터를 조회하거나 수정하고 싶을 때
-- RLS(Row Level Security) 정책이 의도대로 작동하는지 SQL로 직접 검증하고 싶을 때
-- 마이그레이션 SQL을 작성하고 즉시 Supabase에 적용해 결과를 확인하고 싶을 때
-
-## 핵심 개념
+## 핵심 개념 / 작동 원리
 
 `supabase-mcp`는 Supabase의 관리 API와 PostgreSQL 연결을 통해 Claude가 프로젝트 데이터베이스를 직접 조작할 수 있게 합니다.
+
+```mermaid
+flowchart TD
+    A[Claude Code] -->|mcpServers 설정| B[supabase-mcp 서버 실행]
+    B -->|service_role 키 인증| C[Supabase 관리 API]
+    B -->|PostgreSQL 직접 연결| D[Supabase DB]
+    C --> E{관리 작업}
+    D --> F{데이터 작업}
+    E -->|스키마 조회| G[테이블 구조 / 인덱스 / 외래키]
+    E -->|RLS 관리| H[정책 목록 조회 / 테스트]
+    F -->|SQL 실행| I[SELECT / INSERT / UPDATE / DDL]
+    F -->|마이그레이션| J[SQL 파일 생성 및 적용]
+    G --> K[결과 반환 → Claude 컨텍스트]
+    H --> K
+    I --> K
+    J --> K
+```
 
 **주의**: Supabase MCP 서버는 2024~2025년 사이 여러 커뮤니티 버전이 등장했으며, 공식 Supabase에서도 자체 MCP를 제공하기 시작했습니다. 설치 전 최신 공식 가이드를 확인하세요.
 
@@ -43,7 +49,11 @@ Supabase 프로젝트를 Claude에서 직접 관리할 수 있는 MCP 서버로,
 
 Supabase `service_role` 키를 사용합니다. 이 키는 RLS를 우회하는 강력한 권한을 가지므로 보안에 특히 주의가 필요합니다.
 
-## 설치 및 설정
+## 한 줄 요약
+
+Supabase 프로젝트를 Claude에서 직접 관리할 수 있는 MCP 서버로, 테이블 조회·RLS 정책 확인·SQL 실행을 대화 중에 처리합니다.
+
+## 프로젝트에 도입하기
 
 ### 사전 요구사항
 
@@ -93,7 +103,7 @@ Supabase가 공식 MCP를 제공하는 경우 아래 형식을 사용합니다. 
 
 **중요**: `service_role` 키를 설정 파일에 하드코딩하지 마세요. 환경변수로 분리하거나 `.claude/settings.json`을 `.gitignore`에 추가하세요.
 
-## 실전 예제
+## 실전 예제 (대학생 관점)
 
 **상황**: Next.js 15 "동아리 공지 게시판" 프로젝트에서 Supabase를 데이터베이스로 사용합니다. 아래 스키마가 구성되어 있습니다:
 - `profiles` 테이블: 사용자 프로필
@@ -140,7 +150,7 @@ notices 테이블의 현재 인덱스 현황을 보여줘.
 인덱스가 빠져 있다면 추가해줘.
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 ### 효과적인 사용 방법
 
@@ -160,6 +170,12 @@ notices 테이블의 현재 인덱스 현황을 보여줘.
 - `service_role` 키는 데이터베이스 관리자 권한에 준하는 강력한 키입니다. 이 키가 노출되면 모든 데이터가 위험에 처합니다.
 - 프로덕션 환경에서는 절대 MCP를 통한 직접 조작을 피하고, 마이그레이션 파일 + CI/CD 파이프라인을 통해 변경사항을 관리하세요.
 - Supabase 프로젝트에서 "Database Webhooks"나 "Realtime" 기능을 통해 비정상적인 접근을 모니터링하는 것을 권장합니다.
+
+## 관련 리소스
+
+- [github-mcp](./github-mcp.md) — 마이그레이션 SQL 파일을 작성(supabase-mcp)하고 GitHub에 PR로 올리는 워크플로(github-mcp)를 조합할 수 있습니다.
+- [fetch-mcp](./fetch-mcp.md) — Supabase REST API를 fetch-mcp로 직접 호출해 RLS 적용 결과를 외부 관점에서 검증할 수 있습니다.
+- [위험 명령어 차단 훅](../hooks/block-dangerous.md) — `DROP TABLE` 같은 위험한 SQL 실행을 Claude가 시도할 때 사전 차단하는 안전망으로 함께 사용하세요.
 
 ---
 

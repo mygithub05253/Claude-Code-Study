@@ -10,20 +10,22 @@ tags: ["mcp", "github", "api", "git", "issues", "pr"]
 
 # github-mcp
 
-## 한 줄 요약
+## 핵심 개념 / 작동 원리
 
-GitHub API를 Claude에서 직접 호출할 수 있게 하는 MCP 서버로, 이슈 생성·PR 검토·코드 검색을 대화 중에 수행할 수 있습니다.
+`github-mcp` 서버는 GitHub REST API v3를 래핑한 MCP 서버로, Claude가 대화 중에 GitHub 이슈·PR·코드를 직접 조작할 수 있게 합니다.
 
-## 언제 사용하나요?
-
-- Claude와 대화하면서 GitHub 이슈를 바로 생성하거나 확인하고 싶을 때
-- PR 코드 리뷰를 Claude에게 맡기고 싶을 때
-- 특정 레포의 파일 내용이나 커밋 히스토리를 컨텍스트로 넣고 싶을 때
-- 팀 프로젝트에서 이슈 트래킹과 코드 작업을 하나의 흐름으로 처리하고 싶을 때
-
-## 핵심 개념
-
-`github-mcp` 서버는 GitHub REST API v3를 래핑한 MCP 서버로, 아래와 같은 도구들을 제공합니다.
+```mermaid
+flowchart TD
+    A[Claude Code] -->|mcpServers 설정| B[github-mcp 서버 실행]
+    B -->|GITHUB_TOKEN 인증| C[GitHub REST API v3]
+    C --> D{도구 호출}
+    D -->|이슈 관련| E[create_issue / list_issues / update_issue]
+    D -->|PR 관련| F[create_pull_request / merge_pull_request]
+    D -->|코드 관련| G[search_code / get_file_contents / push_files]
+    E --> H[결과 반환 → Claude 컨텍스트]
+    F --> H
+    G --> H
+```
 
 ### 제공 도구 목록
 
@@ -53,7 +55,11 @@ GitHub API를 Claude에서 직접 호출할 수 있게 하는 MCP 서버로, 이
 
 GitHub Personal Access Token(PAT)을 환경변수 `GITHUB_TOKEN`으로 설정합니다. 읽기 전용 작업이라면 `public_repo` 스코프로 충분하고, 이슈 생성·PR 머지 등에는 `repo` 스코프가 필요합니다.
 
-## 설치 및 설정
+## 한 줄 요약
+
+GitHub API를 Claude에서 직접 호출할 수 있게 하는 MCP 서버로, 이슈 생성·PR 검토·코드 검색을 대화 중에 수행할 수 있습니다.
+
+## 프로젝트에 도입하기
 
 ### 사전 요구사항
 
@@ -94,7 +100,7 @@ GitHub Personal Access Token(PAT)을 환경변수 `GITHUB_TOKEN`으로 설정합
 
 **주의**: `GITHUB_TOKEN` 값을 설정 파일에 하드코딩하지 말고, 가능하면 환경변수나 비밀 관리 도구를 사용하세요.
 
-## 실전 예제
+## 실전 예제 (대학생 관점)
 
 **상황**: Next.js 15 "동아리 공지 게시판" 프로젝트에서 팀 협업을 진행 중입니다. Claude와 대화하면서 GitHub 이슈를 생성하고 PR을 검토하려고 합니다.
 
@@ -132,7 +138,7 @@ mygithub05253/club-notice-board 레포의 열린 이슈 목록을 가져와서
 버그/기능/개선 레이블로 분류하고 우선순위 순으로 정리해줘.
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 ### 효과적인 사용 방법
 
@@ -152,6 +158,12 @@ mygithub05253/club-notice-board 레포의 열린 이슈 목록을 가져와서
 - Fine-grained Personal Access Token을 사용해 레포별로 최소 권한을 부여하는 것을 권장합니다.
 - 가능하면 읽기 전용 작업에는 별도의 제한된 토큰을 사용하세요.
 - `.claude/settings.json`은 `.gitignore`에 추가하거나, 토큰을 환경변수로 분리하세요.
+
+## 관련 리소스
+
+- [filesystem-mcp](./filesystem-mcp.md) — 로컬 파일을 Claude에서 직접 조작하는 MCP. GitHub 코드 변경 전후로 함께 사용하면 유용합니다.
+- [fetch-mcp](./fetch-mcp.md) — GitHub API를 토큰 없이 공개 정보만 가져올 때 대안으로 사용할 수 있습니다.
+- [supabase-mcp](./supabase-mcp.md) — 코드 변경(github-mcp)과 DB 마이그레이션(supabase-mcp)을 하나의 워크플로로 연결할 수 있습니다.
 
 ---
 

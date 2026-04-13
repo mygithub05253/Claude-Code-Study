@@ -10,20 +10,24 @@ tags: ["mcp", "filesystem", "files", "local", "claude-desktop"]
 
 # filesystem-mcp
 
-## 한 줄 요약
-
-지정된 로컬 디렉토리에 한정해 파일을 읽고 쓸 수 있게 하는 MCP 서버로, Claude Desktop에서 프로젝트 파일을 안전하게 다룰 수 있습니다.
-
-## 언제 사용하나요?
-
-- Claude Desktop에서 로컬 프로젝트 파일을 직접 읽고 수정하고 싶을 때
-- 특정 폴더만 허용해 Claude의 파일 접근 범위를 제한하고 싶을 때
-- 여러 파일을 한 번에 분석하거나 일괄 수정 작업을 Claude에게 맡기고 싶을 때
-- Claude Code CLI 없이 Claude Desktop 환경에서도 파일 작업이 필요할 때
-
-## 핵심 개념
+## 핵심 개념 / 작동 원리
 
 `filesystem-mcp`는 허용된 디렉토리 경로를 설정에 명시하고, 그 범위 내에서만 파일 조작을 허용합니다. 경로 탈출(path traversal) 공격을 방지하는 안전한 샌드박스 방식입니다.
+
+```mermaid
+flowchart TD
+    A[Claude Desktop / Claude Code] -->|mcpServers 설정| B[filesystem-mcp 서버 실행]
+    B --> C{허용 경로 목록 확인}
+    C -->|허용된 경로 내 요청| D[도구 실행]
+    C -->|허용 범위 밖 요청| E[접근 거부 오류 반환]
+    D --> F{도구 종류}
+    F -->|읽기| G[read_file / list_directory / directory_tree]
+    F -->|쓰기| H[write_file / edit_file / move_file]
+    F -->|검색| I[search_files / search_file_content]
+    G --> J[결과 반환 → Claude 컨텍스트]
+    H --> J
+    I --> J
+```
 
 ### 제공 도구 목록
 
@@ -48,7 +52,11 @@ tags: ["mcp", "filesystem", "files", "local", "claude-desktop"]
 - 심볼릭 링크를 통한 허용 범위 밖 접근 차단
 - 상대 경로(`../`) 탈출 시도 차단
 
-## 설치 및 설정
+## 한 줄 요약
+
+지정된 로컬 디렉토리에 한정해 파일을 읽고 쓸 수 있게 하는 MCP 서버로, Claude Desktop에서 프로젝트 파일을 안전하게 다룰 수 있습니다.
+
+## 프로젝트에 도입하기
 
 ### 사전 요구사항
 
@@ -110,7 +118,7 @@ tags: ["mcp", "filesystem", "files", "local", "claude-desktop"]
 
 **핵심**: `args` 배열에서 패키지 이름 뒤에 오는 항목들이 허용 경로입니다. 여러 경로를 공백으로 나열할 수 있습니다.
 
-## 실전 예제
+## 실전 예제 (대학생 관점)
 
 **상황**: Next.js 15 "동아리 공지 게시판" 프로젝트를 Claude Desktop에서 분석하고 수정하려 합니다. Claude Code CLI 대신 Claude Desktop을 사용하는 환경입니다.
 
@@ -147,7 +155,7 @@ darkMode를 'class' 방식으로 변경해줘.
 변경 전후 diff도 보여줘.
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 ### 효과적인 사용 방법
 
@@ -167,6 +175,12 @@ darkMode를 'class' 방식으로 변경해줘.
 - 허용 경로를 최대한 좁게 설정하세요. 민감한 정보(`.env`, SSH 키, 인증서)가 있는 디렉토리는 절대 포함하지 마세요.
 - `write_file` 권한이 있으면 Claude가 실수로 설정 파일을 덮어쓸 수 있습니다. 중요 파일이 있는 경로는 읽기 전용으로 운영하는 것을 검토하세요.
 - 팀 프로젝트에서 공유 설정 파일에 허용 경로를 커밋하지 마세요. 각자 로컬 경로가 다릅니다.
+
+## 관련 리소스
+
+- [github-mcp](./github-mcp.md) — 로컬 파일 수정(filesystem-mcp) 후 GitHub에 push·PR을 만들 때 조합해 사용합니다.
+- [fetch-mcp](./fetch-mcp.md) — 외부 문서를 가져와 로컬 파일에 반영하는 워크플로에서 함께 사용합니다.
+- [자동 포맷 훅](../hooks/auto-format.md) — 파일 저장 후 자동으로 코드 포맷을 적용하는 Hooks 레시피입니다.
 
 ---
 
