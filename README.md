@@ -108,10 +108,10 @@ pnpm build:docs
 | 3 | VitePress 사이트 MVP | ✅ 완료 |
 | 4 | GitHub Pages 배포 | ✅ 완료 |
 | **5** | **P1: 38개 스킬 + 비스킬 콘텐츠** | ✅ **완료** |
-| **6** | **카드 UI + Mermaid + 생태계 탐색 허브** | 🔄 **진행 중** |
+| **6** | **카드 UI + Mermaid + 7섹션 재구성 + 생태계 탐색 허브** | ✅ **완료** |
 | 7 | P2: 영어 번역 + 일본어 + CLI | ⏳ 대기 |
 
-### Phase 6 달성 (6-A + 6-B)
+### Phase 6 달성 (6-A ~ 6-F)
 
 - [x] VitePress 커스텀 테마 (CardGrid.vue, CardItem.vue, card.css)
 - [x] vitepress-plugin-mermaid 설치 + withMermaid 설정
@@ -119,6 +119,11 @@ pnpm build:docs
 - [x] 48개 스킬 카드 그리드 인덱스 (8개 그룹)
 - [x] MCP / Hooks / Agents / Repos / Use-Cases / My-Collection / Prompts 인덱스 카드화
 - [x] 홈페이지 features + 현황 업데이트
+- [x] **48개 스킬 7섹션 구조 재구성** (핵심 개념 최상단 + mermaid + 프로젝트 도입하기 + 관련 리소스)
+- [x] **비스킬 12개 7섹션 재구성** (agents 4, hooks 2, mcp 5, repos 1)
+- [x] source_url / source_author frontmatter 전체 추가
+- [x] content-v2.md 템플릿 + .gitignore 비스킬 sync 규칙 확장
+- [x] CLAUDE.md 7섹션 구조 + 생태계 허브 관리 원칙 반영
 
 ### Phase 5 달성 (P1)
 
@@ -145,7 +150,7 @@ pnpm build:docs
 | 9 | test-driven-development | [content/ko/skills/test-driven-development.md](./content/ko/skills/test-driven-development.md) |
 | 10 | systematic-debugging | [content/ko/skills/systematic-debugging.md](./content/ko/skills/systematic-debugging.md) |
 
-각 해설은 다음 6개 섹션을 포함한다: **한 줄 요약 / 언제 사용하나요? / 핵심 개념 / 실전 예제 (대학생 관점) / 학습 포인트 / 원본과의 차이**. 예제는 Next.js 15 + TypeScript 기반 대학생 프로젝트 맥락으로 구성되어 있다.
+각 해설은 다음 **7개 섹션**을 포함한다 (Phase 6 기준): **핵심 개념/작동 원리(mermaid) / 한 줄 요약 / 프로젝트에 도입하기 / 실전 예제(대학생 관점) / 학습 포인트 / 관련 리소스 / 원본 링크**. 예제는 Next.js 15 + TypeScript + Supabase 기반 대학생 프로젝트(동아리 공지 게시판) 맥락으로 통일되어 있다.
 
 ## 기여 / 라이선스
 

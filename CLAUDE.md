@@ -37,13 +37,22 @@
 - `docs/` — 개발 문서 (PRD, ADR). 사이트 빌드에 포함되지 않음
 
 ## 콘텐츠 작성 원칙 (필수)
-모든 해설 페이지는 다음 6섹션 구조를 따른다:
-1. 한 줄 요약
-2. 왜 대학생에게 유용한가 (시나리오)
-3. 핵심 개념 / 작동 원리
-4. 실전 예제 (동아리 공지 게시판 맥락 통일)
+모든 해설 페이지는 다음 **7섹션 구조** (Phase 6-C+ 기준)를 따른다:
+1. 핵심 개념 / 작동 원리 (mermaid 흐름도 포함, 최상단 배치)
+2. 한 줄 요약 (상세를 읽은 후 정리용 한 문장)
+3. 프로젝트에 도입하기 (설치/설정 명령어 + 커스터마이징)
+4. 실전 예제 (동아리 공지 게시판 맥락 통일: Next.js 15 + TypeScript + Supabase)
 5. 학습 포인트 / 흔한 함정
-6. 원본 링크 & 저작권 (표준 테이블)
+6. 관련 리소스 (같은 카테고리 상호 참조 2~4개)
+7. 원본 링크 & 저작권 (표준 테이블)
+
+> **mermaid 작성 원칙**: 흐름이 복잡한 경우 `핵심 개념` 섹션에 `flowchart TD` 또는 `sequenceDiagram` 필수 삽입.
+> 템플릿: `content/ko/_templates/content-v2.md` 참조
+
+### 생태계 탐색 허브 관리 원칙
+- 새 콘텐츠 추가 시 해당 카테고리 `apps/docs/[category]/index.md`의 CardGrid에 카드 추가
+- `content/ko/ecosystem/index.md`는 외부 생태계 링크 허브 (GitHub / Smithery.ai / Claude Skills Directory)
+- `apps/docs` 아래 sync 파일은 `.gitignore` 적용, index.md만 git 추적
 
 ### 파일 네이밍 규칙
 - `content/ko/skills/[skill-name].md`
