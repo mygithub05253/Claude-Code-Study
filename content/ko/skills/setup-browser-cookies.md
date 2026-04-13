@@ -1,25 +1,19 @@
 ---
 title: "브라우저 쿠키 가져오기 (Setup Browser Cookies)"
 source: "~/.claude/skills/setup-browser-cookies/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic (gstack 생태계)"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["브라우저", "QA", "인증", "쿠키", "gstack"]
+category: "브라우저/QA"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 브라우저 쿠키 가져오기 (Setup Browser Cookies)
-
-## 한 줄 요약
-
-실제 Chromium 브라우저에 저장된 쿠키를 **대화형 도메인 선택 UI**를 통해 Headless 브라우저 세션으로 가져와, 로그인 인증이 필요한 페이지를 Headless 환경에서도 테스트할 수 있게 해주는 쿠키 이식 스킬이다.
-
-## 언제 사용하나요?
-
-- "쿠키 가져와 줘", "사이트에 로그인해 줘", "브라우저 인증해 줘" 같은 요청을 받았을 때
-- Headless 브라우저(`/browse`)로 테스트하려는 페이지에 로그인이 필요할 때
-- QA 자동화 세션 시작 전, 인증된 사용자 관점의 페이지를 테스트해야 할 때
-- 소셜 로그인(카카오, Google, GitHub 등) 때문에 자동 로그인 스크립트 작성이 어려울 때
-- 세션 만료 후 Headless 세션을 다시 인증된 상태로 초기화해야 할 때
 
 ## 핵심 개념
 
@@ -56,8 +50,6 @@ Setup Browser Cookies가 실행되면 다음과 같은 인터랙티브 선택 UI
 
 ### 쿠키 이식 이후의 세션 상태
 
-쿠키 이식 완료 후 Headless 브라우저는 실제 Chrome과 동일한 인증 상태를 갖는다.
-
 ```
 [Setup Browser Cookies] 완료
 
@@ -75,6 +67,20 @@ Headless 세션 상태: 인증됨
 - Headless 세션은 테스트 종료 후 자동으로 정리된다
 - 실제 Chrome의 쿠키는 수정하지 않는다 (읽기 전용 복사)
 - 도메인별 선택이 가능하므로 업무 관련 쿠키만 선별적으로 가져올 수 있다
+
+## 한 줄 요약
+
+실제 Chromium 브라우저에 저장된 쿠키를 **대화형 도메인 선택 UI**를 통해 Headless 브라우저 세션으로 가져와, 로그인 인증이 필요한 페이지를 Headless 환경에서도 테스트할 수 있게 해주는 쿠키 이식 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/setup-browser-cookies
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/setup-browser-cookies/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -112,7 +118,7 @@ Headless 세션 상태: 인증됨
 [Setup Browser Cookies] localhost:3000 쿠키 이식 완료
   next-auth.session-token: eyJhbGci... (만료: 2026-04-15 23:59)
   next-auth.csrf-token: a3f9... (세션 고정)
-Headless 세션 인증 상태: ✓ 완료
+Headless 세션 인증 상태: 완료
 ```
 
 ### 3단계 — 인증 후 Headless QA 재시도
@@ -130,18 +136,14 @@ Headless 세션 인증 상태: ✓ 완료
   ✓ 새 공지 작성 (제목/내용/카테고리 입력 → 저장)
   ✓ 공지 수정 (기존 공지 편집 → 업데이트)
   ✗ 공지 삭제 — 삭제 확인 다이얼로그 버튼 미응답
-
-[qa] 1개 실패 항목 발견: 삭제 다이얼로그 버튼 클릭 이슈
 ```
 
 발견된 버그 즉시 수정:
 
 ```tsx
 // components/DeleteConfirmDialog.tsx — 버그 수정
-// 문제: Dialog 내부 버튼에 onClick 이벤트는 있으나 type="button"이 없어
-//       폼 안에 있을 때 의도치 않게 폼 submit이 발생함
 
-// Before
+// Before: type="button" 누락으로 폼 submit 발생
 <button
   onClick={() => onConfirm()}
   className="rounded bg-red-600 px-4 py-2 text-white"
@@ -183,29 +185,7 @@ export const config = {
 // setup-browser-cookies로 이 쿠키를 가져오면 Headless에서도 접근 가능
 ```
 
-```typescript
-// 쿠키 만료 확인 유틸리티 (setup-browser-cookies 전에 실행)
-// utils/checkSessionExpiry.ts
-export async function checkSessionExpiry(): Promise<boolean> {
-  const response = await fetch('/api/auth/session');
-  const session = await response.json();
-
-  if (!session?.expires) return false;
-
-  const expiresAt = new Date(session.expires);
-  const now = new Date();
-  const remainingMinutes = (expiresAt.getTime() - now.getTime()) / 1000 / 60;
-
-  if (remainingMinutes < 5) {
-    console.warn(`세션 만료 임박: ${Math.floor(remainingMinutes)}분 남음. 재로그인 필요.`);
-    return false;
-  }
-
-  return true;
-}
-```
-
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **소셜 로그인의 현실적 문제**: 카카오, Google, GitHub 소셜 로그인은 OAuth 리디렉션 플로우가 복잡해서 자동화 스크립트로 로그인을 재현하기 매우 어렵다. Setup Browser Cookies는 이 복잡한 과정을 건너뛰고 이미 로그인된 상태를 바로 활용할 수 있게 해준다.
 - **흔한 실수 — 쿠키 만료 후 재테스트 실패**: 쿠키를 가져온 후 시간이 지나 세션이 만료되면 Headless 세션도 다시 로그아웃 상태가 된다. QA 세션이 길어질 경우 중간에 쿠키를 다시 가져와야 한다.
@@ -213,10 +193,17 @@ export async function checkSessionExpiry(): Promise<boolean> {
 - **Next.js 15 팁 — NextAuth 세션 토큰 이름**: NextAuth.js v5(Auth.js)에서는 세션 쿠키 이름이 `next-auth.session-token`(HTTP) 또는 `__Secure-next-auth.session-token`(HTTPS)으로 구분된다. 로컬 개발 서버는 HTTP이므로 `next-auth.session-token`을 선택하면 된다.
 - **QA 자동화 워크플로우**: `setup-browser-cookies` → `/qa` → 결과 확인 순서가 인증이 필요한 페이지의 표준 Headless QA 워크플로우다. 이 패턴을 마스터하면 로그인 뒤에 숨겨진 기능을 자동으로 테스트할 수 있다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 gstack Headless 브라우저와 실제 Chromium 간 쿠키 이식을 위한 내부 API를 사용한다. 본 해설은 NextAuth.js 기반의 Next.js 15 프로젝트에서 어떤 쿠키가 이식되는지를 구체적으로 설명했다.
-- 소셜 로그인(카카오, Google, GitHub)이 자동화 인증 스크립트 작성을 어렵게 만든다는 맥락을 추가하여, 왜 쿠키 이식 방식이 실용적인지를 설명했다.
-- 쿠키 만료 확인 유틸리티 코드를 추가하여 장시간 QA 세션에서 발생하는 세션 만료 문제를 예방하는 방법을 보여줬다.
+- [qa](./qa.md) — 버그 발견 + 자동 수정 QA 스킬
+- [qa-only](./qa-only.md) — 리포트 전용 QA 스킬
+- [browse](./browse.md) — Headless 브라우저 탐색 스킬
 
-> 원본: `~/.claude/skills/setup-browser-cookies/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic (gstack 생태계) |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

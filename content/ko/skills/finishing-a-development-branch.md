@@ -1,25 +1,19 @@
 ---
 title: "개발 브랜치 완료 처리 (Finishing a Development Branch)"
 source: "~/.claude/skills/finishing-a-development-branch/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["finishing-a-development-branch", "브랜치", "PR", "머지", "커밋 정리"]
+category: "배포"
 ---
 
 # 개발 브랜치 완료 처리 (Finishing a Development Branch)
-
-## 한 줄 요약
-
-구현이 완료되고 테스트가 모두 통과한 뒤, **머지/PR 생성/정리 중 어떤 통합 방법을 선택할지 구조화된 선택지를 제시하고 선택한 경로를 완전히 수행**하는 스킬이다.
-
-## 언제 사용하나요?
-
-- "다 됐어, 이제 어떻게 해?", "브랜치 마무리해 줘" 같은 요청을 받았을 때
-- 기능 구현이 완료되고 `pnpm test`가 전부 통과한 순간
-- 혼자 작업하는 사이드 프로젝트에서 직접 머지할지 PR을 만들지 결정이 필요할 때
-- 팀 작업에서 PR 작성, 리뷰 요청, 브랜치 삭제까지 한 번에 처리하고 싶을 때
-- `git log --oneline` 결과가 너무 지저분해서 squash 머지가 필요한지 판단할 때
 
 ## 핵심 개념
 
@@ -54,6 +48,14 @@ feature/add-image-upload → main
 2. squash 대상 커밋 식별 ("WIP", "fix typo", "minor" 등)
 3. `git rebase -i`로 정리 후 머지 또는 PR 생성
 
+### 언제 사용하나요?
+
+- "다 됐어, 이제 어떻게 해?", "브랜치 마무리해 줘" 같은 요청을 받았을 때
+- 기능 구현이 완료되고 `pnpm test`가 전부 통과한 순간
+- 혼자 작업하는 사이드 프로젝트에서 직접 머지할지 PR을 만들지 결정이 필요할 때
+- 팀 작업에서 PR 작성, 리뷰 요청, 브랜치 삭제까지 한 번에 처리하고 싶을 때
+- `git log --oneline` 결과가 너무 지저분해서 squash 머지가 필요한지 판단할 때
+
 ### 완료 후 정리 작업
 
 통합 방법과 무관하게, 머지 후 공통으로 수행하는 정리 작업이 있다.
@@ -62,6 +64,20 @@ feature/add-image-upload → main
 - **관련 이슈 닫기**: PR 본문의 `Closes #123` 키워드 확인 또는 수동 닫기
 - **Document Release 제안**: 새 기능이 추가된 경우 `/document-release` 스킬 실행 제안
 - **다음 작업 스냅샷**: MEMORY.md 또는 프로젝트 TODO 갱신 제안
+
+## 한 줄 요약
+
+구현이 완료되고 테스트가 모두 통과한 뒤, **머지/PR 생성/정리 중 어떤 통합 방법을 선택할지 구조화된 선택지를 제시하고 선택한 경로를 완전히 수행**하는 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/finishing-a-development-branch
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/finishing-a-development-branch/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -125,10 +141,6 @@ feature/add-image-upload → main
 
 ### 4단계 — PR 생성
 
-```bash
-[Finishing Branch] PR 생성 중...
-```
-
 생성되는 PR 본문 예시:
 
 ```markdown
@@ -167,7 +179,7 @@ Closes #42
   → .canary 모니터링 시작 (이미지 업로드 기능 배포 후 감시)
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **WIP 커밋은 머지 전에 반드시 정리**: `git commit -m "WIP"`, `git commit -m "fix"`, `git commit -m "a"` 같은 커밋이 main 브랜치 이력에 들어가면, 나중에 `git log`로 변경 이유를 추적할 때 아무 정보도 없는 노이즈가 된다.
 - **흔한 실수 — 빠르다고 `git push -f` 남용**: squash 후 강제 push가 필요한 경우가 있지만, 공유 브랜치(다른 사람이 checkout한 브랜치)에 `git push -f`를 하면 동료의 이력이 꼬인다. 혼자 사용하는 feature 브랜치에만 사용한다.
@@ -175,10 +187,17 @@ Closes #42
 - **이 프로젝트 적용**: 이 프로젝트의 `CLAUDE.md`에는 "main 직접 push, P1부터 feature 브랜치 + PR" 전략이 명시되어 있다. Finishing Branch 스킬은 이 전략에서 경로 A(직접 머지, MVP 단계)와 경로 B(PR, P1 이후)를 명확히 구분해 안내한다.
 - **Next.js 15 팁 — `pnpm typecheck` 필수**: 테스트 통과만으로는 부족하다. `pnpm typecheck`(= `tsc --noEmit`)를 브랜치 완료 전에 반드시 실행해 타입 오류가 없는지 확인한다. 타입 오류는 런타임에 나타나지 않다가 배포 후 갑자기 터지는 경우가 있다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 단순히 "완료 후 통합 방법을 제시한다"는 단문 설명으로 구성되어 있다. 본 해설은 세 가지 경로(직접 머지 / PR / 정리 후 PR)를 구체적인 시나리오와 함께 풀어냈다.
-- 원본에서 명시적으로 다루지 않는 "커밋 이력 정리(squash)" 프로세스를 대학생 협업 맥락에서 중요한 내용으로 추가했다.
-- 이 프로젝트의 브랜치 전략(MVP는 main 직접, P1부터 PR)과 연계한 실용적 안내를 추가했다.
+- [document-release](./document-release.md) — 머지 후 문서 동기화 (브랜치 완료 이후 단계)
+- [ship](./ship.md) — 배포 파이프라인 자동화
+- [review](./review.md) — 머지 전 코드 리뷰 자동화
 
-> 원본: `~/.claude/skills/finishing-a-development-branch/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

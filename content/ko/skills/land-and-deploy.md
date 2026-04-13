@@ -1,24 +1,19 @@
 ---
 title: "배포 자동화 (Land and Deploy)"
 source: "~/.claude/skills/land-and-deploy/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic (gstack 생태계)"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["배포", "CI/CD", "gstack", "머지", "헬스체크"]
+category: "배포"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 배포 자동화 (Land and Deploy)
-
-## 한 줄 요약
-
-`/ship`이 생성한 PR을 받아 **머지 → CI 대기 → 배포 → 프로덕션 헬스 체크**까지 자동으로 완료하는 배포 파이프라인 완결 스킬이다. 코드를 직접 건드리지 않고 "이 PR을 프로덕션에 올려" 라는 명령 한 줄로 배포를 마무리한다.
-
-## 언제 사용하나요?
-
-- "머지해 줘", "배포해 줘", "main에 올려 줘", "ship it to production" 같이 PR을 실제로 배포까지 연결하고 싶을 때
-- `ship` 스킬로 PR을 이미 만들었고 이제 프로덕션에 반영할 준비가 된 때
-- CI/CD가 완료될 때까지 대기하다가 프로덕션 헬스를 자동으로 검증하고 싶을 때
-- "머지하고 확인해 줘", "land it", "merge and verify" 같은 표현으로 요청할 때
 
 ## 핵심 개념
 
@@ -67,6 +62,20 @@ gstack 생태계에서 배포 워크플로우는 두 스킬로 나뉜다.
 **4. Canary 헬스 체크**
 - `canary` 스킬(GStack 기반)을 통해 프로덕션 URL에 접속해 핵심 페이지가 200을 반환하는지, 주요 UI 요소가 올바르게 렌더링되는지 확인한다.
 - 헬스 체크 실패 시 롤백 권고 메시지를 출력한다.
+
+## 한 줄 요약
+
+`/ship`이 생성한 PR을 받아 **머지 → CI 대기 → 배포 → 프로덕션 헬스 체크**까지 자동으로 완료하는 배포 파이프라인 완결 스킬이다. 코드를 직접 건드리지 않고 "이 PR을 프로덕션에 올려" 라는 명령 한 줄로 배포를 마무리한다.
+
+## 프로젝트에 도입하기
+
+```bash
+/land-and-deploy
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/land-and-deploy/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -193,7 +202,7 @@ jobs:
           vercel-args: "--prod"
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"머지 = 배포"가 아닌 "머지 → CI → 배포 → 검증"의 4단계**: 많은 대학생이 GitHub에서 Merge 버튼을 누르고 배포가 자동으로 됐겠거니 넘어간다. `land-and-deploy`는 이 4단계를 명시적으로 완료해야 "배포 완료"임을 가르쳐 준다.
 - **Canary 체크는 보험이다**: 배포 후 30초만 헬스 체크해도 "데이터베이스 마이그레이션을 안 했다"처럼 명백한 에러를 바로 잡을 수 있다. 팀원에게 버그 제보를 받기 전에 먼저 발견하는 것이 훨씬 낫다.
@@ -201,11 +210,17 @@ jobs:
 - **흔한 함정 — 리뷰 없이 머지**: `land-and-deploy`는 PR이 승인됐는지 확인하고 머지한다. 팀 프로젝트에서 리뷰어 없이 본인이 만들고 본인이 머지하는 경우, 이 검사를 건너뛰는 설정이 필요하다. 하지만 실제 서비스에서는 반드시 리뷰 프로세스를 갖추는 것을 권장한다.
 - **Next.js 15 팁 — 데이터베이스 마이그레이션 순서**: Supabase를 쓰는 Next.js 프로젝트에서는 배포 전에 반드시 마이그레이션을 먼저 적용해야 한다. 코드가 새 테이블을 참조하는데 테이블이 없으면 Canary 헬스 체크에서 500 에러가 난다. "migrate first, deploy second" 원칙을 지키자.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 gstack 생태계의 일부로, `ship` 스킬 이후의 배포 완결 단계를 담당함을 명시한다. 본 해설에서는 `ship → land-and-deploy` 전체 흐름을 도식으로 시각화해 두 스킬의 관계를 명확히 했다.
-- 원본의 "canary checks" 개념을 Vercel + Supabase 배포 환경에서 실제로 발생하는 시나리오(마이그레이션 누락으로 인한 500 에러)로 구체화했다.
-- CI 실패 및 헬스 체크 실패 시의 출력 예시와 롤백 권고는 원본의 "verify production health" 개념을 한국 대학생이 경험할 실제 상황으로 재해석한 것이다.
-- GitHub Actions 마이그레이션 연동 예시는 원본에 없는 내용으로, Next.js 15 + Supabase 조합에서 land-and-deploy를 안정적으로 사용하기 위한 실용적 추가 내용이다.
+- [ship](./ship.md) — PR 생성 스킬 (land-and-deploy의 선행 단계)
+- [setup-deploy](./setup-deploy.md) — 배포 환경 초기 설정
+- [canary](./canary.md) — 프로덕션 헬스 체크 스킬
 
-> 원본: `~/.claude/skills/land-and-deploy/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic (gstack 생태계) |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

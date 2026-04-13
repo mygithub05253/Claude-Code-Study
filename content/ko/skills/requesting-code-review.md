@@ -1,25 +1,19 @@
 ---
 title: "코드 리뷰 요청 (Requesting Code Review)"
 source: "~/.claude/skills/requesting-code-review/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["코드리뷰", "PR", "자가검증", "협업"]
+category: "코드 리뷰"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 코드 리뷰 요청 (Requesting Code Review)
-
-## 한 줄 요약
-
-작업 완료 후, 주요 기능 구현 후, 또는 main 브랜치 머지 직전에 **요구사항 충족 여부를 체계적으로 검증**하는 코드 리뷰 요청 스킬이다.
-
-## 언제 사용하나요?
-
-- 구현을 완료했다고 판단했을 때, PR을 올리기 전 마지막 자가 검증이 필요할 때
-- 주요 기능(로그인, 결제, 알림 등)을 구현한 후 "이게 요구사항을 다 만족하는가?"를 확인하고 싶을 때
-- main 브랜치에 머지하기 전, 동료에게 리뷰를 요청하기 위한 PR 설명을 작성할 때
-- 기능 구현 후 테스트 커버리지, 에러 핸들링, 엣지 케이스를 빠뜨린 곳이 없는지 점검할 때
-- 팀원에게 리뷰를 요청할 때 "어디를 중점적으로 봐달라"는 컨텍스트를 명확히 전달하고 싶을 때
 
 ## 핵심 개념
 
@@ -64,6 +58,20 @@ PR을 올리기 전에 다음 항목을 스스로 점검한다.
 ## 스크린샷 (UI 변경 시)
 - Before/After 이미지
 ```
+
+## 한 줄 요약
+
+작업 완료 후, 주요 기능 구현 후, 또는 main 브랜치 머지 직전에 **요구사항 충족 여부를 체계적으로 검증**하는 코드 리뷰 요청 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/requesting-code-review
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/requesting-code-review/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -156,9 +164,6 @@ export async function createNotice(formData: FormData) {
 ## 중점 리뷰 요청
 - Server Action에서 에러를 반환하는 방식이 적절한지 (return vs throw)
 - Supabase RLS 정책과 `author_id` 저장 방식이 충돌 없는지
-
-## 스크린샷
-[공지 작성 폼 이미지 첨부]
 ```
 
 **자가 검증 결과 — Claude의 피드백 예시**
@@ -172,26 +177,7 @@ export async function createNotice(formData: FormData) {
 ❌ 테스트 없음: createNotice Server Action에 대한 유닛/통합 테스트가 없습니다.
 ```
 
-**수정 후 버그 수정 예시**
-
-```typescript
-// ❌ 버그 있는 코드
-if (error) {
-  return { error: { _root: ["공지 저장에 실패했습니다."] } };
-}
-revalidatePath("/notices");
-redirect("/notices"); // error return 이후에도 실행될 수 있음
-
-// ✅ 수정 후
-if (error) {
-  return { error: { _root: ["공지 저장에 실패했습니다."] } };
-}
-// 여기까지 오면 성공이 확실함
-revalidatePath("/notices");
-redirect("/notices");
-```
-
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **PR = 의사소통 문서다**: 코드만 올리는 PR은 리뷰어에게 불친절하다. 왜 이 변경을 했는지, 어디를 봐달라는지 명시하는 것이 팀 생산성을 높인다.
 - **자가 검증은 리뷰 전에**: 리뷰어가 "테스트는 돌려봤어요?"라고 물어보는 상황을 만들지 말자. 자가 검증 체크리스트를 PR 설명에 포함하면 신뢰도가 올라간다.
@@ -199,11 +185,17 @@ redirect("/notices");
 - **Next.js 15 팁**: Server Action에서 `return`과 `redirect()`의 순서를 꼭 확인한다. `redirect()`는 내부적으로 예외를 던지므로 `try-catch` 안에 넣으면 예상치 못한 동작이 생긴다. `try` 블록 밖에서 호출하는 것이 안전하다.
 - **리뷰 요청 타이밍**: "완성됐다고 생각할 때"와 "실제로 완성됐을 때"는 다르다. 자가 검증 스킬을 돌린 후 피드백을 반영하고 나서 리뷰를 요청하는 것이 효율적이다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본 스킬은 작업 완료, 주요 기능 구현, main 머지 전 세 시점을 명시한다. 본 해설은 이를 구체적인 체크리스트와 PR 설명 템플릿으로 확장했다.
-- 원본에 없는 "자가 검증 → PR 설명 → 리뷰 요청"의 흐름을 명시적으로 구조화했다.
-- Next.js 15 Server Action의 `redirect()` 관련 흔한 버그를 대학생 맥락에 맞게 추가했다.
-- 원본에서 다루지 않는 Zod 검증, Supabase 인증 패턴을 실전 예제로 포함했다.
+- [receiving-code-review](./receiving-code-review.md) — 코드 리뷰 수신 스킬
+- [review](./review.md) — PR 사전 자가 리뷰 스킬
+- [ship](./ship.md) — PR 생성 + 리뷰 요청 자동화
 
-> 원본: `~/.claude/skills/requesting-code-review/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

@@ -1,25 +1,19 @@
 ---
 title: "Codex 코드 리뷰 (Codex)"
 source: "~/.claude/skills/codex/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["codex", "코드 리뷰", "보안", "적대적 검증"]
+category: "코드 리뷰"
 ---
 
 # Codex 코드 리뷰 (Codex)
-
-## 한 줄 요약
-
-OpenAI Codex CLI를 Claude Code 내에서 래핑해 **코드 리뷰, 적대적 공격 테스트, 자유 질문**을 지원하는 "두 번째 두뇌" 스킬이다. "200 IQ 자폐 개발자"라는 별명처럼 감정 없이 논리적으로 코드의 약점을 찾아낸다.
-
-## 언제 사용하나요?
-
-- PR diff를 올리기 전 Claude 리뷰와는 다른 시각으로 **두 번째 의견(second opinion)** 을 얻고 싶을 때 (`codex review`)
-- "내 코드를 최대한 공격해 봐 — 버그를 찾아내 봐" 식의 **적대적 검증**이 필요할 때 (`codex challenge`)
-- 특정 구현 방식의 장단점, 알고리즘 선택, 라이브러리 추천 등 **기술 자문**이 필요할 때 (`codex consult`)
-- Claude Code가 스스로 생성한 코드를 외부 관점에서 교차 검증하고 싶을 때
-- "codex 리뷰 해줘", "두 번째 의견 줘", "codex에 물어봐" 같은 요청을 받았을 때
 
 ## 핵심 개념
 
@@ -37,9 +31,31 @@ Codex 스킬은 세 가지 모드로 작동한다.
 
 Codex와 **대화형 세션**을 열어 기술 자문을 구한다. 세션 연속성(session continuity)이 지원되므로 이전 대화 맥락을 유지하면서 후속 질문을 할 수 있다. "방금 말한 패턴을 우리 프로젝트에 어떻게 적용하면 돼?"와 같은 이어지는 질문이 가능하다.
 
+### 언제 사용하나요?
+
+- PR diff를 올리기 전 Claude 리뷰와는 다른 시각으로 **두 번째 의견(second opinion)** 을 얻고 싶을 때 (`codex review`)
+- "내 코드를 최대한 공격해 봐 — 버그를 찾아내 봐" 식의 **적대적 검증**이 필요할 때 (`codex challenge`)
+- 특정 구현 방식의 장단점, 알고리즘 선택, 라이브러리 추천 등 **기술 자문**이 필요할 때 (`codex consult`)
+- Claude Code가 스스로 생성한 코드를 외부 관점에서 교차 검증하고 싶을 때
+- "codex 리뷰 해줘", "두 번째 의견 줘", "codex에 물어봐" 같은 요청을 받았을 때
+
 ### "200 IQ 자폐 개발자"라는 의미
 
 원본 스킬에서 사용하는 이 표현은 Codex의 특성을 압축한 것이다. 감정 없이, 사회적 눈치 없이, 오직 코드의 논리적 정확성과 안전성만을 기준으로 판단한다는 뜻이다. 팀원 리뷰는 "감정을 고려한 부드러운 피드백"이 될 수 있지만, Codex는 그렇지 않다.
+
+## 한 줄 요약
+
+OpenAI Codex CLI를 Claude Code 내에서 래핑해 **코드 리뷰, 적대적 공격 테스트, 자유 질문**을 지원하는 "두 번째 두뇌" 스킬이다. "200 IQ 자폐 개발자"라는 별명처럼 감정 없이 논리적으로 코드의 약점을 찾아낸다.
+
+## 프로젝트에 도입하기
+
+```bash
+/codex
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/codex/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -126,19 +142,25 @@ Codex가 찾아낼 수 있는 공격 벡터:
   createNotice Server Action에 어떻게 붙이면 돼?
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **Claude 리뷰와 Codex 리뷰는 상호 보완적이다**: Claude Code는 프로젝트 전체 컨텍스트를 알고 있어 "이 코드가 우리 아키텍처에 맞는가"를 잘 판단한다. 반면 Codex는 독립적으로 diff만 보므로 "이 코드 자체가 안전한가"를 다른 시각으로 본다. 두 리뷰를 모두 통과한 코드가 훨씬 안전하다.
-- **Challenge 모드는 발표 전 필수**: 팀 프로젝트 발표나 해커톤 제출 직전에 "가장 나쁜 시나리오로 내 코드를 부숴봐"라고 요청하면 예상치 못한 버그를 미리 발견할 수 있다. 발표 도중 교수님이나 심사위원이 이상한 입력을 넣는 것보다 미리 찾는 게 낫다.
-- **pass/fail 게이트를 CI에 통합하는 방향 고려**: 원본 스킬은 `codex review`를 ship 파이프라인의 블로킹 단계로 사용한다. Next.js 15 프로젝트라면 GitHub Actions에서 `pnpm codex review`를 PR 체크로 추가하는 것을 목표로 삼자.
+- **Challenge 모드는 발표 전 필수**: 팀 프로젝트 발표나 해커톤 제출 직전에 "가장 나쁜 시나리오로 내 코드를 부숴봐"라고 요청하면 예상치 못한 버그를 미리 발견할 수 있다.
+- **pass/fail 게이트를 CI에 통합하는 방향 고려**: 원본 스킬은 `codex review`를 ship 파이프라인의 블로킹 단계로 사용한다. GitHub Actions에서 `pnpm codex review`를 PR 체크로 추가하는 것을 목표로 삼자.
 - **흔한 함정 — Codex CLI 설치 여부 확인**: 이 스킬은 OpenAI Codex CLI가 로컬에 설치되어 있어야 동작한다. `codex --version`으로 먼저 확인하고, 없다면 `npm install -g @openai/codex`로 설치해야 한다.
-- **Next.js 15 관점**: Server Action에서 입력 검증이 빠진 경우, 인증 누락, `async/await` 오류 전파 패턴은 Codex Challenge 모드가 특히 잘 잡아낸다. 실무에서 가장 흔히 발생하는 Next.js 취약점 패턴이기도 하다.
+- **Next.js 15 관점**: Server Action에서 입력 검증이 빠진 경우, 인증 누락, `async/await` 오류 전파 패턴은 Codex Challenge 모드가 특히 잘 잡아낸다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 gstack 생태계 스킬로 `ship` 파이프라인과 통합되어 자동으로 호출될 수 있다. 본 해설은 세 가지 모드를 독립적으로 사용하는 시나리오 중심으로 설명했다.
-- 원본의 "200 IQ autistic developer" 표현을 그대로 소개하되, 한국 독자 맥락에서 의미를 풀어 설명했다.
-- OpenAI Codex CLI 설치 전제 조건을 본 해설에서 명시적으로 추가했다. 원본은 이미 설치된 환경을 가정하는 것으로 보인다.
-- 대학생 발표, 해커톤, GitHub Actions CI 통합 등 한국 대학생 맥락의 활용 시나리오를 추가했다.
+- [review](./review.md) — Claude 기반 코드 리뷰 (Codex와 상호 보완)
+- [requesting-code-review](./requesting-code-review.md) — 코드 리뷰 요청 방법
+- [cso](./cso.md) — 보안 감사 (OWASP, STRIDE 위협 모델링)
 
-> 원본: `~/.claude/skills/codex/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

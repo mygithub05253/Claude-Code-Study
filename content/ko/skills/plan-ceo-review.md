@@ -1,25 +1,19 @@
 ---
 title: "CEO 관점 계획 검토 (Plan CEO Review)"
 source: "~/.claude/skills/plan-ceo-review/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["기획", "계획검토", "전략", "범위설정"]
+category: "기획/설계"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # CEO 관점 계획 검토 (Plan CEO Review)
-
-## 한 줄 요약
-
-CEO/창업자 모드로 계획을 검토하여 **문제 자체를 재정의하고, 더 큰 그림의 제품을 찾아내며, 전제를 도전하고, 더 나은 제품을 만들 수 있다면 범위를 과감히 확장**하는 전략적 계획 검토 스킬이다.
-
-## 언제 사용하나요?
-
-- "더 크게 생각해 봐", "범위를 확장해 줘", "전략 리뷰해 줘" 같은 요청을 받았을 때
-- "이 계획이 충분히 야심 찬가?" 또는 "더 좋은 접근법이 없을까?" 라는 의문이 들 때
-- 현재 계획이 문제의 근본을 해결하지 못하고 증상만 다루는 것처럼 느껴질 때
-- 팀원들이 계획을 보고 "이게 최선인가요?"라는 피드백을 줄 때
-- 제품 아이디어의 초기 단계에서 방향성을 잡기 전에 검증받고 싶을 때
 
 ## 핵심 개념
 
@@ -56,6 +50,20 @@ CEO 관점 검토에서 가장 강력한 도구는 현재 계획의 전제(premi
 - "슬랙/카카오톡 연동으로 해결하면 게시판이 필요 없지 않은가?"
 
 이런 질문이 불편하게 느껴지더라도 구현을 시작하기 전에 해야 한다.
+
+## 한 줄 요약
+
+CEO/창업자 모드로 계획을 검토하여 **문제 자체를 재정의하고, 더 큰 그림의 제품을 찾아내며, 전제를 도전하고, 더 나은 제품을 만들 수 있다면 범위를 과감히 확장**하는 전략적 계획 검토 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/plan-ceo-review
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/plan-ceo-review/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -152,7 +160,7 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"이미 세운 계획도 전제를 바꿀 수 있다"**: 한국 대학생은 보통 "일단 구현하고 나중에 고친다"는 방식을 택하는 경향이 있다. CEO Review는 구현 전에 방향을 검증하는 단계로, 잘못된 방향으로 열심히 달리는 것보다 초반에 방향을 바로잡는 것이 비용이 훨씬 적다.
 - **흔한 실수 — 모드 선택 없이 무조건 확장**: CEO Review의 강점은 4가지 모드를 상황에 맞게 선택하는 것이다. 항상 SCOPE EXPANSION만 하면 마감 기한을 지키지 못한다. 발표 D-3이라면 SCOPE REDUCTION이 최선의 선택이다.
@@ -160,10 +168,17 @@ export async function POST(req: NextRequest) {
 - **Next.js 15 팁 — Server Actions와 CEO Review**: CEO Review에서 카카오톡 알림 연동이 제안된 경우, Next.js 15의 Server Actions를 활용하면 API 라우트 없이 서버에서 바로 Webhook을 호출할 수 있어 코드가 간결해진다.
 - **`/plan-eng-review`, `/plan-design-review`와의 관계**: 세 스킬은 계획 검토의 3가지 관점이다. CEO Review(방향/전략) → Design Review(UX/시각) → Eng Review(구현/아키텍처) 순서로 실행하는 것이 이상적이다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 gstack 환경의 plan 모드와 직접 연동되는 워크플로우를 전제한다. 본 해설은 Claude Code CLI 대화 흐름 기반으로 재구성했다.
-- 4가지 모드(SCOPE EXPANSION / SELECTIVE EXPANSION / HOLD SCOPE / SCOPE REDUCTION)를 한국 대학생의 프로젝트 현실(팀 프로젝트 마감, 발표 일정)에 맞춰 선택 기준을 구체화했다.
-- "10-star 제품" 사고 방식을 "동아리 공지 게시판 → 대학 동아리 허브"라는 구체적 사례로 설명하여 추상적 개념을 실감 있게 전달했다.
+- [office-hours](./office-hours.md) — 아이디어 검증 (선행 단계)
+- [plan-design-review](./plan-design-review.md) — 디자인 관점 계획 검토
+- [plan-eng-review](./plan-eng-review.md) — 엔지니어링 관점 계획 검토
 
-> 원본: `~/.claude/skills/plan-ceo-review/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

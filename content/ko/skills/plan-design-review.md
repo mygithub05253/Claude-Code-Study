@@ -1,25 +1,19 @@
 ---
 title: "디자인 관점 계획 검토 (Plan Design Review)"
 source: "~/.claude/skills/plan-design-review/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["기획", "디자인", "UI", "UX", "계획검토"]
+category: "기획/설계"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 디자인 관점 계획 검토 (Plan Design Review)
-
-## 한 줄 요약
-
-디자이너의 눈으로 **구현 전 계획 단계에서** UI/UX 설계를 검토하여, 각 디자인 차원을 0~10점으로 평가하고 10점에 도달하기 위해 계획을 직접 수정하는 대화형 계획 검토 스킬이다.
-
-## 언제 사용하나요?
-
-- "디자인 계획 검토해 줘", "UI 설계 피드백 줘", "디자인 비평해 줘" 같은 요청을 받았을 때
-- 와이어프레임이나 UI 설계 계획서가 완성되어 구현에 들어가기 직전
-- 팀 프로젝트에서 디자이너 없이 개발자가 UI를 직접 설계해야 할 때
-- 컴포넌트 구조, 정보 아키텍처, 색상 시스템을 계획했는데 전문가 피드백이 필요할 때
-- 이미 구현된 사이트의 시각적 QA가 필요하다면 `/design-review`를 사용한다 — Plan Design Review는 **구현 전** 단계에서 사용하는 스킬이다
 
 ## 핵심 개념
 
@@ -51,6 +45,20 @@ Plan Design Review는 단방향 피드백 리포트가 아니라 **CEO Review, E
 | 결과물 | 수정된 계획서 | 수정된 소스 코드 + 커밋 |
 | 시점 | 코딩 전 | 코딩 후 QA |
 | 브라우저 필요 | 없음 | 있음 (스크린샷) |
+
+## 한 줄 요약
+
+디자이너의 눈으로 **구현 전 계획 단계에서** UI/UX 설계를 검토하여, 각 디자인 차원을 0~10점으로 평가하고 10점에 도달하기 위해 계획을 직접 수정하는 대화형 계획 검토 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/plan-design-review
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/plan-design-review/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -173,7 +181,6 @@ export function NoticeCard({ title, author, date, category, isPinned, preview }:
       {/* 정보 위계: 제목 최우선 → 카테고리 → 메타 정보 → 미리보기 */}
       <div className="flex items-start justify-between gap-3">
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-white line-clamp-2">
-          {isPinned && <span className="mr-2 text-blue-600">📌</span>}
           {title}
         </h2>
         <CategoryBadge category={category} />
@@ -195,29 +202,7 @@ export function NoticeCard({ title, author, date, category, isPinned, preview }:
 }
 ```
 
-```tsx
-// 반응형 레이아웃 — 모바일 우선 설계
-export default function NoticesPage() {
-  return (
-    <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* 헤더: 모바일에서 세로 배치, 데스크톱에서 가로 배치 */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">공지사항</h1>
-        <CreateNoticeButton />
-      </div>
-
-      {/* 카드 목록: space-y-6 = lg spacing */}
-      <div className="mt-8 space-y-6">
-        {notices.map((notice) => (
-          <NoticeCard key={notice.id} {...notice} />
-        ))}
-      </div>
-    </main>
-  );
-}
-```
-
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **구현 전 검토의 비용 절감 효과**: 코드를 100줄 쓰고 나서 "여백 시스템이 없다"는 걸 깨닫는 것보다, 계획 단계에서 설계 토큰을 정의하는 것이 수정 비용이 10배 이상 저렴하다. Plan Design Review는 이 사전 투자를 도와준다.
 - **흔한 실수 — 색상에만 집중**: 디자인 검토를 "색상이 예쁜가?"로만 이해하는 경우가 많다. Plan Design Review는 여백, 타이포그래피, 접근성, 반응형까지 7개 차원을 균형 있게 다룬다.
@@ -225,10 +210,17 @@ export default function NoticesPage() {
 - **Next.js 15 팁 — CSS 변수로 디자인 토큰 관리**: 디자인 토큰을 TypeScript 상수로만 관리하면 Tailwind의 JIT와 충돌할 수 있다. `globals.css`에 CSS 변수로 정의하고, `tailwind.config.ts`에서 참조하는 방식이 Next.js 15에서 권장된다.
 - **`/design-review`와의 구분**: Plan Design Review는 구현 전 설계 검토, `/design-review`는 구현 후 시각적 QA다. 두 스킬 모두 사용하면 설계-구현-검증의 완전한 디자인 품질 루프를 완성할 수 있다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 CEO Review, Eng Review와 동일한 대화형 plan 모드 워크플로우로 동작한다. 본 해설은 CLI 대화 흐름에서 어떻게 활용하는지를 중심으로 재구성했다.
-- "0~10 평가 시스템"을 한국 대학생 프로젝트에서 자주 부족한 항목(여백, 반응형, 다크 모드)에 집중하여 설명했다.
-- Tailwind CSS 기반의 구체적인 코드 스니펫을 추가하여 디자인 토큰 → 컴포넌트 설계로 이어지는 실천 경로를 보여줬다.
+- [plan-ceo-review](./plan-ceo-review.md) — CEO 관점 계획 검토
+- [plan-eng-review](./plan-eng-review.md) — 엔지니어링 관점 계획 검토
+- [design-review](./design-review.md) — 구현 후 시각적 QA
 
-> 원본: `~/.claude/skills/plan-design-review/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

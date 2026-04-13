@@ -1,25 +1,19 @@
 ---
 title: "파괴적 명령어 안전 가드 (Careful)"
 source: "~/.claude/skills/careful/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["careful", "안전", "파괴적 명령어", "운영 환경", "guard"]
+category: "품질/안전"
 ---
 
 # 파괴적 명령어 안전 가드 (Careful)
-
-## 한 줄 요약
-
-`rm -rf`, `DROP TABLE`, `git reset --hard`, `force push`, `kubectl delete` 같은 **되돌리기 어렵거나 불가능한 명령어** 실행 전에 경고를 띄우고 사용자 확인을 요구하는 안전 장치 스킬이다.
-
-## 언제 사용하나요?
-
-- 운영 환경(production) 서버 또는 운영 DB에 접근할 때
-- 라이브 시스템을 직접 디버깅하거나 핫픽스를 배포할 때
-- 팀원이 공유하는 환경(공용 스테이징, 공유 브랜치)에서 작업할 때
-- 대규모 데이터 마이그레이션이나 스키마 변경 작업 전에
-- "실수하면 진짜 큰일 나는" 상황에서 Claude에게 위임하기 전에 안전망을 깔고 싶을 때
 
 ## 핵심 개념
 
@@ -34,6 +28,14 @@ Careful 모드는 다음 범주의 명령어를 사전에 가로챈다.
 | **Git** | `git push --force`, `git reset --hard`, `git clean -f` | 커밋/변경사항 영구 제거 |
 | **컨테이너/클러스터** | `kubectl delete`, `docker system prune` | 서비스 종료, 이미지 삭제 |
 | **프로세스** | `kill -9 PID`, `pkill -f` | 프로세스 강제 종료 |
+
+### 언제 사용하나요?
+
+- 운영 환경(production) 서버 또는 운영 DB에 접근할 때
+- 라이브 시스템을 직접 디버깅하거나 핫픽스를 배포할 때
+- 팀원이 공유하는 환경(공용 스테이징, 공유 브랜치)에서 작업할 때
+- 대규모 데이터 마이그레이션이나 스키마 변경 작업 전에
+- "실수하면 진짜 큰일 나는" 상황에서 Claude에게 위임하기 전에 안전망을 깔고 싶을 때
 
 ### 경고 → 사용자 선택 흐름
 
@@ -60,6 +62,20 @@ Claude: 이 명령어는 되돌릴 수 없습니다:
 > safety mode  # 또는
 > prod mode (운영 환경임을 명시)
 ```
+
+## 한 줄 요약
+
+`rm -rf`, `DROP TABLE`, `git reset --hard`, `force push`, `kubectl delete` 같은 **되돌리기 어렵거나 불가능한 명령어** 실행 전에 경고를 띄우고 사용자 확인을 요구하는 안전 장치 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/careful
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/careful/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -132,7 +148,7 @@ rm -rf ./public/uploads/test-*
 계속하시겠습니까? [y/N]
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"나는 실수 안 해"의 함정**: 피로하거나 집중력이 떨어진 상태에서 운영 환경 작업은 누구나 실수한다. Careful 모드는 개인의 집중력에 의존하는 대신 시스템적 안전망을 제공한다.
 - **경고를 무시하는 습관을 피하기**: 경고가 너무 자주 뜨면 무시하게 된다. 개발 환경에서는 Careful 모드를 끄고, 운영/스테이징 환경에 접근할 때만 켜는 것이 좋다.
@@ -140,11 +156,17 @@ rm -rf ./public/uploads/test-*
 - **흔한 실수**: `git push --force`는 개인 feature 브랜치에서는 허용될 수 있지만, `main` 브랜치에서는 절대 안 된다. Careful 모드는 브랜치 이름을 보고 위험도를 가중한다.
 - **Next.js 15 관점 팁**: 빌드 캐시 초기화(`rm -rf .next/`)는 개발 환경에서는 안전하지만, 운영 서버에서 실행하면 일시적인 서비스 중단이 발생할 수 있다. Careful 모드가 이런 맥락을 잡아준다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 "gstack" 환경을 전제하며, Conductor 워크스페이스 간 작업에서의 파괴적 명령어 감시를 포함한다. 본 해설은 로컬 개발 환경과 Supabase/Vercel 배포 맥락으로 재구성했다.
-- 원본에서 감시 대상 명령어 목록은 사용 환경에 따라 확장될 수 있다고 명시한다. 본 해설의 표는 대학생 프로젝트에서 가장 자주 마주치는 명령어를 중심으로 구성했다.
-- `kubectl delete` 등 쿠버네티스 관련 명령어는 원본에 포함되지만, 본 해설에서는 간략히 언급만 했다. 대학생 환경에서 쿠버네티스를 직접 운영하는 경우는 드물다.
-- CLAUDE.md의 "파괴적 작업은 사용자 승인 필수" 원칙과 이 스킬은 직접 연계된다. 본 프로젝트에서 Careful 스킬은 해당 원칙의 실제 구현체다.
+- [guard](./guard.md) — Careful + Freeze 동시 활성화 (최대 안전 모드)
+- [freeze](./freeze.md) — 편집 범위 제한 (디렉토리 외부 파일 수정 차단)
+- [cso](./cso.md) — 보안 감사 (OWASP, STRIDE 위협 모델링)
 
-> 원본: `~/.claude/skills/careful/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

@@ -1,25 +1,19 @@
 ---
 title: "웹 앱 QA 테스트 + 자동 수정 (QA)"
 source: "~/.claude/skills/qa/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic (gstack 생태계)"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["QA", "테스트", "자동수정", "헬스스코어", "gstack"]
+category: "품질/안전"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 웹 앱 QA 테스트 + 자동 수정 (QA)
-
-## 한 줄 요약
-
-웹 애플리케이션을 체계적으로 테스트하고, 발견된 버그를 소스 코드에서 **원자적(atomic) 커밋으로 하나씩 수정**하면서 재검증까지 반복하는, 테스트-픽스-커밋 자동화 스킬이다.
-
-## 언제 사용하나요?
-
-- 기능 구현을 마치고 배포 전 최종 품질 점검이 필요할 때
-- "뭔가 깨진 것 같은데 어디가 문제인지 모를 때" 전체 QA를 한 번에 돌리고 싶을 때
-- PR 생성 전에 자동으로 버그를 찾고 수정한 뒤 깔끔한 커밋 히스토리를 만들고 싶을 때
-- 리팩토링 이후 기존 기능이 망가지지 않았는지 확인할 때
-- 데모/발표 전날 밤, 앱의 현재 상태를 빠르게 점검하고 싶을 때
 
 ## 핵심 개념
 
@@ -53,6 +47,20 @@ QA 실행 전후로 앱의 건강 점수를 계산해 "Before: 62% → After: 94
 ### 리포트 전용 모드
 
 버그 수정 없이 보고서만 원한다면 `/qa-only` 모드를 사용한다.
+
+## 한 줄 요약
+
+웹 애플리케이션을 체계적으로 테스트하고, 발견된 버그를 소스 코드에서 **원자적(atomic) 커밋으로 하나씩 수정**하면서 재검증까지 반복하는, 테스트-픽스-커밋 자동화 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/qa
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/qa/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -132,7 +140,7 @@ git commit -m "fix: 공지 작성 시 제목 미입력 500 오류 수정 — 유
 배포 준비 상태: ✅ Standard 기준 통과
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"수동 테스트 체크리스트"를 대체**: QA 스킬 전에는 직접 브라우저를 열고 하나씩 클릭해야 했다. QA 스킬은 이 과정을 구조화하고 자동화한다.
 - **원자적 커밋의 중요성**: 버그 하나 = 커밋 하나 규칙이 지켜지면, 나중에 "어떤 커밋이 어떤 버그를 고쳤는가"를 추적하기가 쉬워진다. `git bisect`로 회귀를 찾을 때도 유리하다.
@@ -140,11 +148,17 @@ git commit -m "fix: 공지 작성 시 제목 미입력 500 오류 수정 — 유
 - **흔한 실수**: "다 만들고 나서 한 번에 QA"는 늦다. 기능 단위로 Standard 티어를 주기적으로 돌리는 것이 전체 시간을 아낀다.
 - **Next.js 15 관점 팁**: Server Actions의 에러 처리, `loading.tsx`/`error.tsx`의 존재 여부, 캐시 무효화(`revalidatePath`) 누락 같은 Next.js 특유의 버그 패턴은 QA 스킬이 잘 잡아내는 항목들이다. Exhaustive 티어에서는 `<Suspense>` 경계 누락, hydration mismatch 같은 경미한 문제도 검출된다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 "gstack" 환경을 전제하며, 실제 브라우저 자동화(Playwright 등)와 연동될 수 있다고 암시한다. 본 해설은 Claude Code의 코드 분석 기반 QA를 중심으로 설명했다.
-- 원본에서 `/qa-only` 모드는 별도 스킬로 언급된다. 본 해설에서는 동일 스킬의 옵션으로 소개했다.
-- 건강 점수 계산 방식의 구체적인 공식은 원본에서도 명시되지 않는다. Claude가 발견된 버그의 수와 심각도를 기반으로 휴리스틱하게 산출한다.
-- 대학생 맥락에서 "발표 전날 밤" 시나리오를 추가했다. Quick 티어가 이 상황에서 특히 유용하다는 점을 강조했다.
+- [qa-only](./qa-only.md) — 수정 없이 버그 리포트만 생성
+- [setup-browser-cookies](./setup-browser-cookies.md) — 인증 필요 페이지 QA 준비
+- [benchmark](./benchmark.md) — 성능 측정 QA
 
-> 원본: `~/.claude/skills/qa/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic (gstack 생태계) |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

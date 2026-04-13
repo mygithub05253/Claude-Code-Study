@@ -1,27 +1,19 @@
 ---
 title: "디자인 시각 품질 검수 (Design Review)"
 source: "~/.claude/skills/design-review/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["design-review", "UI 검수", "AI 슬롭", "여백", "정보 위계", "시각 품질"]
+category: "디자인"
 ---
 
 # 디자인 시각 품질 검수 (Design Review)
-
-## 한 줄 요약
-
-디자이너의 눈으로 운영 중인 사이트를 감사하여 **시각적 불일치, 여백 문제, 정보 위계 오류, AI 슬롭 패턴, 느린 인터랙션**을 발견하고 소스 코드를 직접 수정한 뒤 커밋까지 수행하는 반복적 QA 스킬이다.
-
-## 언제 사용하나요?
-
-- "디자인 감사해 줘", "시각적으로 이상한 부분 찾아 줘", "디자인 폴리시해 줘" 같은 요청을 받았을 때
-- 개발 완료 후 "완성도 높게 다듬기(polish)" 단계에서
-- AI가 생성한 UI 코드를 사람 디자이너 수준으로 끌어올리고 싶을 때
-- 팀원이 "왜 이게 어색해 보이지?"라는 피드백을 주는데 무엇이 문제인지 모를 때
-- 배포 직전 최종 시각 품질 검수가 필요할 때
-
-구현 전 디자인 리뷰(설계 단계)가 필요하다면 `/plan-design-review`를 사용한다. Design Review는 **이미 구현된 사이트**에 대한 QA다.
 
 ## 핵심 개념
 
@@ -34,6 +26,16 @@ AI가 생성한 UI 코드에는 기술적으로는 동작하지만 디자이너 
 - 텍스트 색상 일관성 없음 — `text-gray-500`, `text-gray-600`, `text-neutral-500`이 혼재
 - 그림자 과다 사용 — `shadow-sm`부터 `shadow-2xl`까지 이유 없이 혼재
 - 정보 위계 부재 — 제목과 본문의 크기 차이가 없어 시선이 어디로 가야 할지 모름
+
+### 언제 사용하나요?
+
+- "디자인 감사해 줘", "시각적으로 이상한 부분 찾아 줘", "디자인 폴리시해 줘" 같은 요청을 받았을 때
+- 개발 완료 후 "완성도 높게 다듬기(polish)" 단계에서
+- AI가 생성한 UI 코드를 사람 디자이너 수준으로 끌어올리고 싶을 때
+- 팀원이 "왜 이게 어색해 보이지?"라는 피드백을 주는데 무엇이 문제인지 모를 때
+- 배포 직전 최종 시각 품질 검수가 필요할 때
+
+구현 전 디자인 리뷰(설계 단계)가 필요하다면 `/plan-design-review`를 사용한다. Design Review는 **이미 구현된 사이트**에 대한 QA다.
 
 ### 반복적 수정 루프 (Iterative Fix Loop)
 
@@ -49,6 +51,20 @@ Design Review는 단순히 문제를 나열하는 것이 아니라 **발견 → 
 ### Before/After 스크린샷 비교
 
 각 수정 전후에 스크린샷을 찍어 나란히 표시함으로써 수정이 실제로 시각적 개선을 가져왔는지 확인한다. 이 과정이 없으면 수정이 오히려 새 문제를 만들었는지 알 수 없다.
+
+## 한 줄 요약
+
+디자이너의 눈으로 운영 중인 사이트를 감사하여 **시각적 불일치, 여백 문제, 정보 위계 오류, AI 슬롭 패턴, 느린 인터랙션**을 발견하고 소스 코드를 직접 수정한 뒤 커밋까지 수행하는 반복적 QA 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/design-review
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/design-review/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -146,7 +162,7 @@ After:  버튼(pill), 카드(xl), 뱃지(full)로 각각 특성에 맞게 조정
 </article>
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"동작한다 != 좋아 보인다"**: 기능 구현 후 "일단 됩니다"와 "사용하기 좋습니다"는 전혀 다른 수준이다. Design Review는 그 갭을 메운다.
 - **흔한 실수 — AI 슬롭 방치**: Claude나 GitHub Copilot이 생성한 UI 코드를 그대로 사용하면 앞서 설명한 AI 슬롭 패턴이 반드시 남는다. 자동 생성 코드는 항상 Design Review로 한 번 더 검수해야 한다.
@@ -154,10 +170,17 @@ After:  버튼(pill), 카드(xl), 뱃지(full)로 각각 특성에 맞게 조정
 - **Next.js 15 팁 — 다크 모드 검수**: Design Review는 라이트 모드만 아니라 다크 모드(`dark:` 클래스)도 반드시 감사 대상에 포함해야 한다. 라이트에서 보기 좋아도 다크에서 색상 대비가 부족한 경우가 많다.
 - **`/plan-design-review`와의 구분**: Design Review는 "이미 완성된 UI를 고친다". `/plan-design-review`는 "구현 전에 디자인 계획을 검토한다". 두 스킬은 보완 관계이며 함께 사용하면 효과가 극대화된다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 Browse 데몬을 활용한 스크린샷 자동화와 gstack 환경의 소스 코드 직접 수정 파이프라인을 전제한다. 본 해설은 로컬 개발 서버(`localhost:3000`) 기반의 워크플로우로 재구성했다.
-- "AI 슬롭" 패턴을 한국어로 설명하고, Tailwind CSS 환경에서 실제로 나타나는 구체적 사례(rounded, padding, shadow 혼재)를 예시로 추가했다.
-- 원본의 "시각적 불일치" 카테고리를 한국 대학생이 실제로 만드는 UI에서 가장 자주 등장하는 문제 순서로 재정렬했다.
+- [design-consultation](./design-consultation.md) — 디자인 시스템 수립 (DESIGN.md 생성)
+- [design-html](./design-html.md) — 디자인 구현 (Design Review의 전 단계)
+- [browse](./browse.md) — 스크린샷 및 레이아웃 확인 (Design Review 내부에서 사용)
 
-> 원본: `~/.claude/skills/design-review/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

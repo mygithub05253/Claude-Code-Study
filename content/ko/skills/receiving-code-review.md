@@ -1,25 +1,19 @@
 ---
 title: "코드 리뷰 수신 (Receiving Code Review)"
 source: "~/.claude/skills/receiving-code-review/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["코드리뷰", "협업", "피드백처리", "기술검증"]
+category: "코드 리뷰"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 코드 리뷰 수신 (Receiving Code Review)
-
-## 한 줄 요약
-
-코드 리뷰 피드백을 수신했을 때, **무조건 수용하는 대신** 기술적 정확성과 프로젝트 맥락을 먼저 검증하고 반영 여부를 판단하는 스킬이다.
-
-## 언제 사용하나요?
-
-- PR에 대한 리뷰 코멘트가 달렸을 때, 바로 수정하기 전에 피드백 내용을 검증하고 싶을 때
-- 리뷰어의 제안이 불명확하거나 기술적으로 의문스러울 때
-- 여러 리뷰어가 서로 상충하는 의견을 줬을 때 어느 쪽을 따를지 정리하고 싶을 때
-- "이 제안을 따르면 오히려 코드가 나빠질 것 같다"는 직관이 들 때, 그 판단을 체계화하고 싶을 때
-- 팀 프로젝트에서 선배/교수님의 리뷰를 무조건 따르는 습관에서 벗어나 **기술적 근거 기반 대화**를 하고 싶을 때
 
 ## 핵심 개념
 
@@ -52,6 +46,20 @@ promptVersion: "ko-v1"
 - 질문이 있으면: 구체적인 코드를 인용하며 무엇이 불명확한지 묻는다.
 - 반박할 때: 감정 없이, 기술적 근거(테스트 결과, 공식 문서, 코드 레퍼런스)를 들어 설명한다.
 
+## 한 줄 요약
+
+코드 리뷰 피드백을 수신했을 때, **무조건 수용하는 대신** 기술적 정확성과 프로젝트 맥락을 먼저 검증하고 반영 여부를 판단하는 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/receiving-code-review
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/receiving-code-review/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
+
 ## 실전 예제 (대학생 관점)
 
 **상황**: Next.js 15 + TypeScript "동아리 공지 게시판" 프로젝트에서 `NoticeCard` 컴포넌트 PR을 올렸더니, 두 가지 리뷰 코멘트가 달렸다.
@@ -60,12 +68,12 @@ promptVersion: "ko-v1"
 
 ```typescript
 // 리뷰어가 지적한 코드: NoticeCard.tsx
-// ❌ 현재 코드
+// 현재 코드
 interface Props {
   data: any; // ← 리뷰어: "any 쓰지 말고 타입 정의하세요"
 }
 
-// ✅ 반영 후
+// 반영 후
 interface NoticeCardProps {
   data: {
     id: string;
@@ -87,7 +95,7 @@ interface NoticeCardProps {
 
 ```typescript
 // 리뷰어가 제안한 코드 변경
-// ❌ 리뷰어 제안: "Server Component니까 async/await 직접 써도 돼요"
+// 리뷰어 제안: "Server Component니까 async/await 직접 써도 돼요"
 // 기존 코드 (Client Component, Zustand 상태 사용)
 "use client";
 export function NoticeCard({ data }: NoticeCardProps) {
@@ -111,7 +119,7 @@ export function NoticeCard({ data }: NoticeCardProps) {
 반박 코멘트 예시:
 > 이 컴포넌트는 `useNoticeStore()`(Zustand)를 사용하고, 클릭 이벤트 핸들러가 있어서 `"use client"` 지시자가 필요합니다. Server Component로 전환하면 런타임 에러가 발생합니다. 선택 상태를 URL 파라미터로 옮기는 설계 변경이 먼저 필요한데, 이번 PR 범위 밖입니다. 다음 PR에서 논의할 수 있습니다.
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"감사합니다, 수정하겠습니다"가 항상 옳은 것은 아니다**: 대학생 팀 프로젝트에서 선배나 교수님의 리뷰를 반사적으로 수용하는 경향이 있다. 하지만 잘못된 제안을 반영하면 버그가 생기고, 그 버그의 책임은 코드를 쓴 사람에게 돌아온다.
 - **반박은 무례함이 아니다**: 코드 근거와 공식 문서를 들어 정중하게 의견을 나누는 것은 협업의 핵심 기술이다. "제가 잘못 이해한 걸 수도 있는데, 이 부분에서 X 이유로 Y 동작이 예상됩니다" 형식이 효과적이다.
@@ -119,11 +127,17 @@ export function NoticeCard({ data }: NoticeCardProps) {
 - **Next.js 15 팁**: App Router에서 Server Component와 Client Component 경계는 리뷰에서 자주 오해가 생기는 지점이다. `"use client"` 지시자 유무, 훅 사용 여부, 이벤트 핸들러 존재 여부를 근거로 명확히 설명할 수 있어야 한다.
 - **피드백 로그 남기기**: PR 코멘트 스레드를 통해 어떤 피드백을 왜 반영했고, 왜 반영하지 않았는지 기록을 남기면 이후 코드 리뷰 문화가 좋아진다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본 스킬은 "performative agreement"와 "blind implementation"을 명시적으로 금지한다. 본 해설은 이 핵심 원칙을 세 단계 처리 프로세스(분류 → 검증 → 응답)로 구체화했다.
-- 원본은 기술적 엄밀성을 강조하지만 구체적인 예제는 포함하지 않는다. 본 해설은 Next.js 15 + Zustand 맥락의 실제 대화 예제를 추가했다.
-- 원본에는 없는 "반박 코멘트 작성법"을 대학생 협업 맥락에 맞게 추가했다.
-- 원본의 "requires technical rigor and verification" 원칙은 "검증 4개 질문"으로 풀어서 설명했다.
+- [requesting-code-review](./requesting-code-review.md) — 코드 리뷰 요청 스킬
+- [review](./review.md) — PR 사전 자가 리뷰 스킬
+- [codex](./codex.md) — 코딩 스타일 가이드
 
-> 원본: `~/.claude/skills/receiving-code-review/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

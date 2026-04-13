@@ -1,25 +1,19 @@
 ---
 title: "작업 상태 체크포인트 (Checkpoint)"
 source: "~/.claude/skills/checkpoint/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["checkpoint", "작업 상태", "세션", "재개", "에이전트"]
+category: "에이전트"
 ---
 
 # 작업 상태 체크포인트 (Checkpoint)
-
-## 한 줄 요약
-
-현재 Git 상태, 내린 결정들, 남은 작업 목록을 **스냅샷으로 저장**하여 세션이 끊기거나 컨텍스트가 전환되어도 정확히 멈춘 지점부터 재개할 수 있게 해주는 작업 상태 관리 스킬이다.
-
-## 언제 사용하나요?
-
-- 세션을 끝내기 직전, 다음번에 어디서부터 시작해야 할지 기록하고 싶을 때
-- 긴 작업 중간에 다른 일로 컨텍스트를 전환해야 할 때 (급한 버그픽스, 미팅 등)
-- 며칠간 이어지는 작업에서 오늘의 진행 상황을 저장하고 싶을 때
-- 새 세션을 열었을 때 "어디까지 했더라?"를 빠르게 복기하고 싶을 때
-- Conductor 워크스페이스나 브랜치 간 작업 인수인계가 필요할 때
 
 ## 핵심 개념
 
@@ -44,6 +38,14 @@ promptVersion: "ko-v1"
   └─ 현재 막힌 지점 / 다음 첫 번째 액션
 ```
 
+### 언제 사용하나요?
+
+- 세션을 끝내기 직전, 다음번에 어디서부터 시작해야 할지 기록하고 싶을 때
+- 긴 작업 중간에 다른 일로 컨텍스트를 전환해야 할 때 (급한 버그픽스, 미팅 등)
+- 며칠간 이어지는 작업에서 오늘의 진행 상황을 저장하고 싶을 때
+- 새 세션을 열었을 때 "어디까지 했더라?"를 빠르게 복기하고 싶을 때
+- Conductor 워크스페이스나 브랜치 간 작업 인수인계가 필요할 때
+
 ### 저장 vs 재개
 
 ```bash
@@ -62,6 +64,20 @@ promptVersion: "ko-v1"
 ### 저장 위치
 
 체크포인트는 메모리 파일(`MEMORY.md` 또는 별도 `checkpoint.md`)에 저장되어 세션이 완전히 종료되어도 유지된다. 이 프로젝트에서는 `C:\Users\kik32\.claude\projects\...\memory\` 경로에 저장된다.
+
+## 한 줄 요약
+
+현재 Git 상태, 내린 결정들, 남은 작업 목록을 **스냅샷으로 저장**하여 세션이 끊기거나 컨텍스트가 전환되어도 정확히 멈춘 지점부터 재개할 수 있게 해주는 작업 상태 관리 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/checkpoint
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/checkpoint/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -160,19 +176,25 @@ export async function middleware(req: NextRequest) {
 }
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **"내가 기억하면 되지"의 함정**: 2시간 후, 또는 다음날 아침에 돌아오면 "어디까지 했더라, 왜 이 결정을 내렸더라"를 떠올리는 데 생각보다 많은 시간을 쓰게 된다. 체크포인트는 이 복기 시간을 거의 0으로 만들어 준다.
 - **결정 이유를 함께 저장**: 단순히 "뭘 했는가"가 아니라 "왜 그렇게 결정했는가"까지 저장하는 것이 핵심이다. 결정 이유를 잃으면 나중에 같은 문제를 다시 검토하는 일이 생긴다.
 - **세션 종료 전 루틴화**: 작업을 마무리할 때마다 checkpoint를 마지막 명령으로 실행하는 습관을 들이면, Learn 스킬의 학습 기록과도 자연스럽게 연동된다.
 - **흔한 실수**: 체크포인트를 저장하지 않고 세션을 종료하는 것이다. 특히 갑작스럽게 세션이 끊기는 경우를 대비해 장시간 작업 시에는 중간중간 체크포인트를 저장해 두자.
-- **Next.js 15 관점 팁**: feature 브랜치 작업 중에 `git stash`로 임시 저장한 변경이 있다면, 체크포인트에 stash 목록도 함께 기록해 두는 것이 좋다. `git stash list`로 확인 가능한 내용을 체크포인트에 메모하면 브랜치 전환 후 stash pop을 잊지 않을 수 있다.
+- **Next.js 15 관점 팁**: feature 브랜치 작업 중에 `git stash`로 임시 저장한 변경이 있다면, 체크포인트에 stash 목록도 함께 기록해 두는 것이 좋다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 "gstack" 환경의 Conductor 워크스페이스 간 핸드오프를 핵심 사용 사례로 다룬다. 본 해설은 개인 개발자가 단일 세션 또는 여러 세션에 걸쳐 작업할 때의 맥락으로 재구성했다.
-- 원본에서 체크포인트는 브랜치 전환 시에도 상태를 유지한다고 명시한다. 본 해설에서는 브랜치 이름을 체크포인트에 포함하는 방식으로 이 개념을 반영했다.
-- 원본의 "Conductor workspace handoffs" 개념은 본 해설에서 간략히 언급만 했다. gstack 환경이 없는 일반 Claude Code 사용자에게는 해당 기능을 직접 활용하기 어렵다.
-- 체크포인트 재개 시 Claude가 파일을 자동으로 열어주겠다고 제안하는 부분은 원본의 "정확히 멈춘 지점에서 재개" 원칙을 해설 차원에서 구체화한 것이다.
+- [using-git-worktrees](./using-git-worktrees.md) — 브랜치별 독립 작업 환경 (체크포인트와 함께 사용)
+- [dispatching-parallel-agents](./dispatching-parallel-agents.md) — 병렬 에이전트 작업 상태 관리
+- [subagent-driven-development](./subagent-driven-development.md) — 서브에이전트 기반 개발
 
-> 원본: `~/.claude/skills/checkpoint/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

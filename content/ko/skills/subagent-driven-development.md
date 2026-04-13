@@ -1,25 +1,19 @@
 ---
 title: "서브에이전트 주도 개발 (Subagent-Driven Development)"
 source: "~/.claude/skills/subagent-driven-development/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+tags: ["에이전트", "서브에이전트", "병렬실행", "오케스트레이터", "구현계획"]
+category: "에이전트"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
 ---
 
 # 서브에이전트 주도 개발 (Subagent-Driven Development)
-
-## 한 줄 요약
-
-**현재 세션 내에서** 구현 계획의 독립 태스크들을 서브에이전트에 위임해 순차·병렬로 실행하는 개발 패턴으로, 오케스트레이터 Claude가 전체 진행 상황을 관제하면서 복잡한 구현을 체계적으로 완성한다.
-
-## 언제 사용하나요?
-
-- 이미 구현 계획(implementation plan)이 작성된 상태에서 실제 코딩을 시작할 때
-- 단일 대화 컨텍스트로 처리하기엔 너무 크고 복잡한 기능을 구현할 때
-- 각 태스크가 명확히 정의된 입력/출력을 가지며, 일부는 병렬 실행이 가능한 경우
-- 구현 중 부분 실패가 발생해도 나머지 태스크는 계속 진행하고 싶을 때
-- "이 계획대로 구현해 줘"라고 요청했을 때 Claude가 스스로 서브에이전트 패턴을 선택해야 하는 경우
 
 ## 핵심 개념
 
@@ -53,6 +47,20 @@ Task 1: Zod 스키마 정의
 ```
 
 이 그래프에서 Task 2와 Task 3은 Task 1이 완료되면 **병렬 실행 가능**하다.
+
+## 한 줄 요약
+
+**현재 세션 내에서** 구현 계획의 독립 태스크들을 서브에이전트에 위임해 순차·병렬로 실행하는 개발 패턴으로, 오케스트레이터 Claude가 전체 진행 상황을 관제하면서 복잡한 구현을 체계적으로 완성한다.
+
+## 프로젝트에 도입하기
+
+```bash
+/subagent-driven-development
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/subagent-driven-development/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -227,7 +235,7 @@ Task 2.2 실패: app/api/notices/[id]/route.ts
   → Task 2.2 재시도: id 타입을 string으로 변환 추가
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **계획이 먼저다**: 서브에이전트 주도 개발은 이미 계획이 있는 상태에서 시작한다. writing-plans 스킬로 먼저 구현 계획을 만들고, 그 다음에 이 스킬로 실행하는 순서를 지키자.
 - **오케스트레이터를 신뢰하되 결과를 확인하라**: 오케스트레이터가 진행 상황을 추적하고 실패를 처리한다고 해도, 모든 서브에이전트 작업이 끝난 후 `pnpm build`와 타입체크를 직접 실행해 통합이 정상인지 확인해야 한다.
@@ -235,11 +243,17 @@ Task 2.2 실패: app/api/notices/[id]/route.ts
 - **흔한 함정 — 태스크 경계 불명확**: "공지 기능 구현해 줘"처럼 모호하게 요청하면 오케스트레이터도 태스크 경계를 제대로 잡지 못한다. "Task 1: lib/schemas/notice.ts 생성, Task 2: ..." 식으로 태스크를 명확하게 나열해야 서브에이전트가 예측 가능하게 동작한다.
 - **Dispatching Parallel Agents와의 차이**: 이 스킬은 현재 세션 안에서 논리적으로 역할을 나누는 것이고, dispatching-parallel-agents는 별도 에이전트를 외부로 파견하는 것이다. 실제 사용에서는 이 두 스킬이 조합되는 경우가 많다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 "현재 세션에서 구현 계획의 독립 태스크를 실행할 때"라는 간결한 설명으로 사용 시점만 정의한다. 본 해설은 오케스트레이터/서브에이전트 개념, 태스크 의존성 그래프, 부분 실패 처리 등을 풀어서 설명했다.
-- 실전 예제에서 오케스트레이터의 진행 관제 로그 형식은 본 해설에서 추가한 시각화다. 원본에서 직접 언급하지 않는 내용이지만, 패턴 이해에 도움이 된다.
-- Next.js 15 App Router의 파일 기반 구조가 이 패턴과 잘 맞는다는 관점은 본 해설에서 추가했다.
-- writing-plans 스킬과의 연계 순서(계획 먼저 → 실행)를 명시적으로 설명했다.
+- [dispatching-parallel-agents](./dispatching-parallel-agents.md) — 외부 에이전트 파견 패턴
+- [using-git-worktrees](./using-git-worktrees.md) — 에이전트별 격리 작업 공간
+- [writing-plans](./writing-plans.md) — 구현 계획서 작성 스킬
 
-> 원본: `~/.claude/skills/subagent-driven-development/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

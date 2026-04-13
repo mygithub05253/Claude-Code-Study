@@ -1,27 +1,19 @@
 ---
 title: "디자인 시스템 컨설팅 (Design Consultation)"
 source: "~/.claude/skills/design-consultation/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:placeholder"
 lang: ko
 generatedAt: "2026-04-12T10:00:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["design-consultation", "디자인 시스템", "DESIGN.md", "Tailwind", "색상", "타이포그래피"]
+category: "디자인"
 ---
 
 # 디자인 시스템 컨설팅 (Design Consultation)
-
-## 한 줄 요약
-
-제품을 이해하고 디자인 환경을 조사한 뒤, **색상·타이포그래피·레이아웃·여백·모션을 포함한 완전한 디자인 시스템을 제안하고 `DESIGN.md`를 프로젝트 디자인 단일 진실 공급원(SSOT)으로 생성**하는 스킬이다.
-
-## 언제 사용하나요?
-
-- 새 프로젝트를 시작할 때 기존 `DESIGN.md`나 디자인 시스템이 없는 경우
-- "디자인 시스템을 만들어 줘", "브랜드 가이드라인이 필요해" 같은 요청을 받았을 때
-- 프론트엔드 개발 전에 시각적 언어(visual language)를 미리 확정하고 싶을 때
-- Tailwind CSS의 `tailwind.config.ts`에 반영할 색상 토큰과 폰트 스케일을 체계적으로 정의하고 싶을 때
-- 팀원들이 "어떤 색을 써야 해?", "버튼 크기가 몇 px이야?" 같은 질문을 반복하고 있을 때
-
-기존 사이트가 있고 현재 디자인 시스템을 **역추론**해야 한다면 `/plan-design-review`를 대신 사용한다.
 
 ## 핵심 개념
 
@@ -36,6 +28,16 @@ Design Consultation 스킬이 생성하는 디자인 시스템은 다음 6가지
 5. **여백(Spacing)**: 4px 기반 spacing scale, 컴포넌트 내부/외부 여백 규칙
 6. **모션(Motion)**: 전환 지속 시간, 이징 곡선, 애니메이션 원칙
 
+### 언제 사용하나요?
+
+- 새 프로젝트를 시작할 때 기존 `DESIGN.md`나 디자인 시스템이 없는 경우
+- "디자인 시스템을 만들어 줘", "브랜드 가이드라인이 필요해" 같은 요청을 받았을 때
+- 프론트엔드 개발 전에 시각적 언어(visual language)를 미리 확정하고 싶을 때
+- Tailwind CSS의 `tailwind.config.ts`에 반영할 색상 토큰과 폰트 스케일을 체계적으로 정의하고 싶을 때
+- 팀원들이 "어떤 색을 써야 해?", "버튼 크기가 몇 px이야?" 같은 질문을 반복하고 있을 때
+
+기존 사이트가 있고 현재 디자인 시스템을 **역추론**해야 한다면 `/plan-design-review`를 대신 사용한다.
+
 ### DESIGN.md — 디자인 SSOT
 
 스킬 실행 결과물은 프로젝트 루트의 `DESIGN.md` 파일이다. 이 파일은 다음 역할을 한다.
@@ -48,6 +50,20 @@ Design Consultation 스킬이 생성하는 디자인 시스템은 다음 6가지
 ### 폰트·색상 미리보기 페이지
 
 스킬은 `DESIGN.md` 외에도 `/design-preview` 경로에 렌더링 가능한 HTML 미리보기 페이지를 생성해 실제 폰트와 색상 조합을 시각적으로 확인할 수 있게 한다.
+
+## 한 줄 요약
+
+제품을 이해하고 디자인 환경을 조사한 뒤, **색상·타이포그래피·레이아웃·여백·모션을 포함한 완전한 디자인 시스템을 제안하고 `DESIGN.md`를 프로젝트 디자인 단일 진실 공급원(SSOT)으로 생성**하는 스킬이다.
+
+## 프로젝트에 도입하기
+
+```bash
+/design-consultation
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/design-consultation/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -165,7 +181,7 @@ export function NoticeCard({ title, date, preview }: NoticeCardProps) {
 }
 ```
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
 - **디자인 시스템 없이 시작하면 나중에 두 배 고생한다**: UI를 임시방편으로 만들다 보면 버튼 색이 7가지, 폰트 크기가 11가지가 된다. DESIGN.md 하나가 이 혼돈을 막는다.
 - **흔한 실수 — Tailwind 기본값에만 의존**: `text-blue-500` 같은 하드코딩 색상을 컴포넌트에 직접 쓰면 나중에 색상 테마를 바꿀 때 전부 수작업으로 교체해야 한다. `tailwind.config.ts`에 토큰을 정의하고 `text-primary`처럼 의미적 이름을 쓰는 것이 옳다.
@@ -173,10 +189,17 @@ export function NoticeCard({ title, date, preview }: NoticeCardProps) {
 - **DESIGN.md는 살아있는 문서다**: 스킬 실행 후 생성된 `DESIGN.md`는 출발점이다. 실제 디자인을 보면서 계속 수정해 나가는 것이 정상적인 과정이다.
 - **`/plan-design-review`와의 구분**: 이미 UI가 있는 상황에서 "현재 디자인 시스템이 무엇인지"를 분석할 때는 `/plan-design-review`를 사용한다. Design Consultation은 0에서 1을 만드는 작업이다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본은 gstack의 Pretext HTML/CSS 프레임워크와 연동된다. 본 해설은 Next.js 15 + Tailwind CSS 4 환경으로 재구성했다.
-- 원본에서 생성하는 "폰트·색상 미리보기 페이지"는 Pretext 컴포넌트 기반이다. 본 해설은 그 개념을 Tailwind 설정 파일과 Next.js 컴포넌트로 대체했다.
-- 한국어 프로젝트에서 중요한 **Pretendard 폰트 적용** 방법을 추가로 설명했다.
+- [design-shotgun](./design-shotgun.md) — 여러 디자인 변형 탐색 (Consultation 이후 세부 UI 결정)
+- [design-html](./design-html.md) — 승인된 디자인을 HTML/CSS로 구현
+- [design-review](./design-review.md) — 완성된 사이트의 시각적 품질 검수
 
-> 원본: `~/.claude/skills/design-consultation/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |

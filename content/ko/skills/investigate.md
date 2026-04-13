@@ -1,27 +1,19 @@
 ---
 title: "체계적 조사 (Investigate)"
 source: "~/.claude/skills/investigate/SKILL.md"
+source_url: "https://docs.anthropic.com/en/docs/claude-code/skills"
+source_author: "Anthropic"
 sourceHash: "sha256:b7d27181a411a66c6f34c0eedd187f776e7aaa97c95d1fa04ce30cfcab407705"
 lang: ko
 generatedAt: "2026-04-09T14:30:00+09:00"
 promptVersion: "ko-v1"
+license: "해설 MIT, 원본 참조용"
+last_reviewed: "2026-04-12"
+tags: ["investigate", "디버깅", "근본 원인", "가설", "버그 조사"]
+category: "품질/안전"
 ---
 
 # 체계적 조사 (Investigate)
-
-## 한 줄 요약
-
-버그/장애/이상 동작을 만났을 때 **"증상 → 가설 → 수정"이 아니라 "근본 원인 확정 → 수정"의 순서**를 강제하는 디버깅 스킬이다. `investigate → analyze → hypothesize → implement` 4단계로 진행한다.
-
-## 언제 사용하나요?
-
-- 원인이 명확하지 않은 버그를 마주했을 때
-- 테스트가 갑자기 빨간불로 바뀌었는데 "뭐가 바뀌었는지" 모를 때
-- 운영 환경에서만 나는 에러, 가끔씩만 나는 에러
-- "일단 try/catch로 감싸자" 같은 미봉책이 생각날 때
-- 동일 증상을 여러 번 반복해서 겪고 있을 때
-
-반대로, 원인이 이미 100% 명확한 타이포나 단순 오탈자는 이 스킬이 과하다. 바로 고치면 된다.
 
 ## 핵심 개념
 
@@ -37,6 +29,30 @@ promptVersion: "ko-v1"
 4. **Implement (구현)**: 검증된 원인 하나를 고친다. 여러 가설을 동시에 "혹시 몰라서" 고치지 않는다.
 
 핵심은 **"증상 패치"와 "원인 수정"의 구분**이다. try/catch, `?? 0`, 타입 캐스팅 같은 도구는 원인을 가릴 때가 많다.
+
+### 언제 사용하나요?
+
+- 원인이 명확하지 않은 버그를 마주했을 때
+- 테스트가 갑자기 빨간불로 바뀌었는데 "뭐가 바뀌었는지" 모를 때
+- 운영 환경에서만 나는 에러, 가끔씩만 나는 에러
+- "일단 try/catch로 감싸자" 같은 미봉책이 생각날 때
+- 동일 증상을 여러 번 반복해서 겪고 있을 때
+
+반대로, 원인이 이미 100% 명확한 타이포나 단순 오탈자는 이 스킬이 과하다. 바로 고치면 된다.
+
+## 한 줄 요약
+
+버그/장애/이상 동작을 만났을 때 **"증상 → 가설 → 수정"이 아니라 "근본 원인 확정 → 수정"의 순서**를 강제하는 디버깅 스킬이다. `investigate → analyze → hypothesize → implement` 4단계로 진행한다.
+
+## 프로젝트에 도입하기
+
+```bash
+/investigate
+```
+
+**SKILL.md 파일 위치**: `~/.claude/skills/investigate/SKILL.md`
+
+커스터마이징이 필요하면 SKILL.md 내용을 복사 후 수정한다.
 
 ## 실전 예제 (대학생 관점)
 
@@ -103,18 +119,24 @@ create trigger on_auth_user_created
 
 **중요**: `middleware.ts`나 `auth.ts`에 "role이 null이면 member로 간주" 같은 증상 패치를 넣지 않았다. 그건 근본 문제(시드 누락)를 숨길 뿐이다.
 
-## 학습 포인트
+## 학습 포인트 / 흔한 함정
 
-- **가설 없이 사실만 수집하는 단계를 "참고" 말 것**: 사람(그리고 LLM)은 관찰 동시에 해석하려 든다. investigate 스킬의 가치는 이 충동을 의식적으로 분리하는 데 있다.
+- **가설 없이 사실만 수집하는 단계를 참고 말 것**: 사람(그리고 LLM)은 관찰 동시에 해석하려 든다. investigate 스킬의 가치는 이 충동을 의식적으로 분리하는 데 있다.
 - **증상 패치의 유혹**: "일단 try/catch로 감싸서 빨간불만 꺼 두자"는 대학생 과제에서 가장 흔한 함정이다. 같은 버그가 다음 주에 다른 형태로 돌아온다.
 - **Next.js 15 팁**: 로컬과 운영의 차이로 생기는 버그는 Next.js 프로젝트에서 정말 자주 나온다. 환경변수, 빌드 모드, 캐시, RSC 직렬화 — 이 네 가지는 항상 의심 목록에 넣자.
 - **가설은 검증 절차와 세트**: "~ 때문인 것 같다"는 가설이 아니라 추측이다. 가설은 "이 쿼리를 돌려 보면 확인 가능하다" 같은 구체적 절차를 동반해야 한다.
 
-## 원본과의 차이
+## 관련 리소스
 
-- 원본의 4단계(Investigate → Analyze → Hypothesize → Implement)와 Iron Law("근본 원인 없이 수정 금지")는 그대로 유지했다.
-- 원본은 gstack 생태계의 일부로, 범용 디버깅을 다룬다. 본 해설은 Next.js 15 + Supabase 과제에서 자주 나오는 "로컬 vs 운영" 차이 버그로 예제를 재구성했다.
-- 원본은 `systematic-debugging` 스킬과 내용적으로 상당히 겹친다 (같은 Iron Law, 비슷한 단계). gstack 안에서 `investigate`는 워크플로우적 진입점에 가깝고, `systematic-debugging`은 더 이론적·교재적이다. 본 해설에서도 두 스킬을 별도 문서로 분리했지만 서로 참조하자.
-- 원본의 특정 단계별 세부 프롬프트나 내부 명령은 본 해설에서 생략했다 — 추측하지 않기 위해서.
+- [systematic-debugging](./systematic-debugging.md) — 심층 디버깅 방법론 (Investigate와 보완 관계)
+- [freeze](./freeze.md) — 디버깅 중 편집 범위 제한으로 집중도 확보
+- [health](./health.md) — 코드 품질 종합 점검 (버그 발생 빈도 추적)
 
-> 원본: `~/.claude/skills/investigate/SKILL.md`
+---
+
+| 항목 | 내용 |
+|---|---|
+| 원본 URL | https://docs.anthropic.com/en/docs/claude-code/skills |
+| 작성자/출처 | Anthropic |
+| 라이선스 | 해설 MIT, 원본 참조용 |
+| 해설 작성일 | 2026-04-12 |
