@@ -12,10 +12,24 @@ apps/docs/.vitepress/cache/
 apps/docs/.vitepress/dist/
 apps/docs/.vitepress/.temp/
 
-# VitePress 동기화 결과물 (content/ko/skills/ → apps/docs/skills/)
-# index.md는 수동 작성이므로 포함, 나머지는 sync-docs로 생성
+# VitePress 동기화 결과물 (content/ko/ → apps/docs/) — sync-docs 자동 생성
+# index.md는 수동 작성이므로 제외
 apps/docs/skills/*.md
 !apps/docs/skills/index.md
+apps/docs/agents/*.md
+!apps/docs/agents/index.md
+apps/docs/hooks/*.md
+!apps/docs/hooks/index.md
+apps/docs/mcp/*.md
+!apps/docs/mcp/index.md
+apps/docs/repos/*.md
+!apps/docs/repos/index.md
+apps/docs/use-cases/*.md
+!apps/docs/use-cases/index.md
+apps/docs/my-collection/*.md
+!apps/docs/my-collection/index.md
+apps/docs/prompts/*.md
+!apps/docs/prompts/index.md
 
 # 환경 변수
 .env
