@@ -30,6 +30,21 @@ apps/docs/my-collection/*.md
 !apps/docs/my-collection/index.md
 apps/docs/prompts/*.md
 !apps/docs/prompts/index.md
+# ecosystem은 index.md만 수동 관리
+apps/docs/ecosystem/*.md
+!apps/docs/ecosystem/index.md
+
+# VitePress 동기화 결과물 — 영어(en) 로케일 (content/en/ → apps/docs/en/) — sync-docs 자동 생성
+# apps/docs/en/index.md는 수동 작성이므로 추적
+apps/docs/en/skills/
+apps/docs/en/mcp/
+apps/docs/en/hooks/
+apps/docs/en/agents/
+apps/docs/en/repos/
+apps/docs/en/use-cases/
+apps/docs/en/my-collection/
+apps/docs/en/prompts/
+apps/docs/en/ecosystem/
 
 # 환경 변수
 .env

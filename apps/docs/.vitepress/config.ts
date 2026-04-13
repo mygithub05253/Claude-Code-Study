@@ -1,17 +1,34 @@
 /**
  * VitePress 루트 설정.
  *
- * 현재는 한국어(ko) 로케일만 활성화되어 있다.
- * Phase 5(P1)에서 영어, Phase 6(P2)에서 일본어 로케일을 추가한다.
+ * Phase 7에서 영어(en) 로케일 추가.
+ * root = 한국어(ko), /en/ = 영어, /ja/ = 일본어(P2)
  */
 
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
 import { koConfig } from "./config/ko.js";
+import { enConfig } from "./config/en.js";
 import { generateSectionSidebar, generateSkillSidebar } from "./sidebar.js";
 
 const base = "/Claude-Code-Study/";
+const hostname = "https://mygithub05253.github.io/Claude-Code-Study/";
+
+/** 영어 사이드바 (en/ 서브경로) */
+function enSidebar() {
+  return {
+    "/en/skills/": generateSkillSidebar("en"),
+    "/en/mcp/": generateSectionSidebar("mcp", "MCP Servers", "Coming soon", "en"),
+    "/en/hooks/": generateSectionSidebar("hooks", "Hooks Recipes", "Coming soon", "en"),
+    "/en/agents/": generateSectionSidebar("agents", "Agent Patterns", "Coming soon", "en"),
+    "/en/repos/": generateSectionSidebar("repos", "GitHub Repos", "Coming soon", "en"),
+    "/en/use-cases/": generateSectionSidebar("use-cases", "Use Cases", "Coming soon", "en"),
+    "/en/my-collection/": generateSectionSidebar("my-collection", "My Collection", "Coming soon", "en"),
+    "/en/prompts/": generateSectionSidebar("prompts", "Prompt Library", "Coming soon", "en"),
+    "/en/ecosystem/": generateSectionSidebar("ecosystem", "Ecosystem", "Coming soon", "en"),
+  };
+}
 
 export default withMermaid(defineConfig({
   base,
@@ -21,6 +38,10 @@ export default withMermaid(defineConfig({
     "한국 대학생 관점으로 Claude Code의 Skills / Agents / MCP / Plugins를 한국어로 이해하고 커스터마이징하는 오픈소스 학습 허브",
   cleanUrls: true,
   lastUpdated: true,
+
+  sitemap: {
+    hostname,
+  },
 
   head: [
     ["meta", { name: "theme-color", content: "#0ea5e9" }],
@@ -34,6 +55,23 @@ export default withMermaid(defineConfig({
       },
     ],
   ],
+
+  locales: {
+    root: {
+      label: "한국어",
+      lang: "ko-KR",
+    },
+    en: {
+      label: "English",
+      lang: "en-US",
+      title: "Claude Code Learning Hub",
+      description: "An open-source learning hub for understanding and customizing Claude Code Skills / Agents / MCP / Plugins",
+      themeConfig: {
+        ...enConfig.themeConfig,
+        sidebar: enSidebar(),
+      },
+    },
+  },
 
   themeConfig: {
     ...koConfig.themeConfig,
@@ -65,6 +103,23 @@ export default withMermaid(defineConfig({
                   selectText: "선택",
                   navigateText: "이동",
                   closeText: "닫기",
+                },
+              },
+            },
+          },
+          en: {
+            translations: {
+              button: {
+                buttonText: "Search",
+                buttonAriaLabel: "Search docs",
+              },
+              modal: {
+                noResultsText: "No results for",
+                resetButtonTitle: "Clear search query",
+                footer: {
+                  selectText: "to select",
+                  navigateText: "to navigate",
+                  closeText: "to close",
                 },
               },
             },

@@ -1,8 +1,9 @@
 /**
- * apps/docs/{section}/ 아래 md 파일들을 스캔해 VitePress 사이드바를 자동 생성한다.
+ * apps/docs/{locale}/{section}/ 아래 md 파일들을 스캔해 VitePress 사이드바를 자동 생성한다.
  *
  * 빌드 시점(config 로드 시)에 동기적으로 동작한다.
  * 새 해설이 추가되면 별도 수정 없이 자동 반영된다.
+ * locale 파라미터: "ko"(기본, root) 또는 "en" 등
  */
 
 import { readdirSync, readFileSync, existsSync } from "node:fs";
@@ -37,19 +38,26 @@ function extractTitle(filePath: string, fallback: string): string {
  * @param section 디렉토리명 (예: "skills", "mcp")
  * @param heading 사이드바 상단 제목
  * @param placeholder 아직 파일이 없을 때 보여줄 안내 텍스트
+ * @param locale 로케일 ("ko" = root, "en" = /en/ 서브경로)
  */
 export function generateSectionSidebar(
   section: string,
   heading: string,
   placeholder = "준비 중",
+  locale = "ko",
 ): DefaultTheme.SidebarItem[] {
-  const sectionDir = resolve(DOCS_ROOT, section);
+  // ko는 root(apps/docs/{section}/), 그 외는 apps/docs/{locale}/{section}/
+  const sectionDir = locale === "ko"
+    ? resolve(DOCS_ROOT, section)
+    : resolve(DOCS_ROOT, locale, section);
+
+  const linkPrefix = locale === "ko" ? `/${section}/` : `/${locale}/${section}/`;
 
   if (!existsSync(sectionDir)) {
     return [
       {
         text: heading,
-        items: [{ text: placeholder, link: `/${section}/` }],
+        items: [{ text: placeholder, link: linkPrefix }],
       },
     ];
   }
@@ -63,7 +71,7 @@ export function generateSectionSidebar(
     const title = extractTitle(join(sectionDir, file), name);
     return {
       text: title,
-      link: `/${section}/${name}`,
+      link: `${linkPrefix}${name}`,
     };
   });
 
@@ -71,7 +79,7 @@ export function generateSectionSidebar(
     return [
       {
         text: heading,
-        items: [{ text: placeholder, link: `/${section}/` }],
+        items: [{ text: placeholder, link: linkPrefix }],
       },
     ];
   }
@@ -85,7 +93,8 @@ export function generateSectionSidebar(
   ];
 }
 
-/** 하위 호환: 기존 config에서 참조하던 함수 */
-export function generateSkillSidebar(): DefaultTheme.SidebarItem[] {
-  return generateSectionSidebar("skills", "스킬 해설");
+/** 스킬 사이드바 생성 (locale 지원) */
+export function generateSkillSidebar(locale = "ko"): DefaultTheme.SidebarItem[] {
+  const heading = locale === "ko" ? "스킬 해설" : "Skill Guides";
+  return generateSectionSidebar("skills", heading, "준비 중", locale);
 }

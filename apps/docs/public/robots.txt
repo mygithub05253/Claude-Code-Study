@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mygithub05253.github.io/Claude-Code-Study/sitemap.xml

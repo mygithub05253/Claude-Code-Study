@@ -1,9 +1,10 @@
 /**
- * content/ko/{section}/*.md → apps/docs/{section}/*.md 복사 스크립트.
+ * content/{locale}/{section}/*.md → apps/docs/{destPrefix}/{section}/*.md 복사 스크립트.
  *
  * Windows 환경에서도 동작하도록 심볼릭 링크 대신 단순 복사를 사용한다.
  * VitePress의 루트 경로(srcDir)는 `apps/docs`이므로,
- * 해설 파일들은 `apps/docs/{section}/` 아래에 있어야 라우트가 잡힌다.
+ * - ko: apps/docs/{section}/  (root 로케일, 기존 경로 유지)
+ * - en: apps/docs/en/{section}/  (영어 서브경로)
  *
  * 동기화 대상 섹션은 SECTIONS 배열에 선언한다.
  * 언더스코어(_)로 시작하는 디렉토리(예: _templates)는 내부 참조용이므로 제외한다.
@@ -17,7 +18,10 @@ import path from "node:path";
 
 const ROOT = path.resolve(process.cwd());
 
-/** 동기화 대상 섹션 목록 (content/ko 하위 디렉토리명) */
+/** 지원 로케일 목록. 향후 'ja' 추가 시 여기에 선언 */
+const LOCALES = ["ko", "en"] as const;
+
+/** 동기화 대상 섹션 목록 (content/{locale} 하위 디렉토리명) */
 const SECTIONS = [
   "skills",
   "mcp",
@@ -39,13 +43,21 @@ async function exists(p: string): Promise<boolean> {
   }
 }
 
-/** 한 섹션의 md 파일을 복사한다. stale 파일은 제거한다. */
-async function syncSection(section: string): Promise<number> {
-  const sourceDir = path.join(ROOT, "content", "ko", section);
-  const destDir = path.join(ROOT, "apps", "docs", section);
+/**
+ * 한 섹션의 md 파일을 복사한다. stale 파일은 제거한다.
+ *
+ * @param locale 로케일 (ko / en)
+ * @param section 섹션명
+ */
+async function syncSection(locale: string, section: string): Promise<number> {
+  const sourceDir = path.join(ROOT, "content", locale, section);
+  // ko는 root(apps/docs/{section}/), 그 외는 apps/docs/{locale}/{section}/
+  const destDir = locale === "ko"
+    ? path.join(ROOT, "apps", "docs", section)
+    : path.join(ROOT, "apps", "docs", locale, section);
 
   if (!(await exists(sourceDir))) {
-    console.warn(`[sync-docs] 건너뜀 (원본 없음): ${section}`);
+    console.warn(`[sync-docs] 건너뜀 (원본 없음): ${locale}/${section}`);
     return 0;
   }
 
@@ -68,7 +80,7 @@ async function syncSection(section: string): Promise<number> {
 
   for (const file of mdFiles) {
     await fs.copyFile(path.join(sourceDir, file), path.join(destDir, file));
-    console.log(`  → ${section}/${file}`);
+    console.log(`  → [${locale}] ${section}/${file}`);
   }
 
   return mdFiles.length;
@@ -76,10 +88,12 @@ async function syncSection(section: string): Promise<number> {
 
 async function main(): Promise<void> {
   let total = 0;
-  for (const section of SECTIONS) {
-    total += await syncSection(section);
+  for (const locale of LOCALES) {
+    for (const section of SECTIONS) {
+      total += await syncSection(locale, section);
+    }
   }
-  console.log(`[sync-docs] 완료: ${total}개 파일 복사 (${SECTIONS.length}개 섹션)`);
+  console.log(`[sync-docs] 완료: ${total}개 파일 복사 (${LOCALES.length}개 로케일 × ${SECTIONS.length}개 섹션)`);
 }
 
 main().catch((error: unknown) => {
