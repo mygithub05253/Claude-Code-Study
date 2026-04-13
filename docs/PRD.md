@@ -112,81 +112,96 @@
 
 ## 8. Phase별 작업 체크리스트
 
-### Phase -1: 사전 준비 (외부 리소스 설치)
-- [ ] 문서화 리소스 2개 설치 (예: awesome-claude-code, VoltAgent/awesome-agent-skills)
-- [ ] 토큰 최적화 MCP 2개 설치 (예: token-optimizer-mcp, claude-context)
-- [ ] 각 리소스 LICENSE 확인
-- [ ] `installed-resources.md`에 기록
-- [ ] Claude Code 세션 재시작 후 인식 확인
+> **범례**: ✅ 완료 · 🔄 진행 중 · ⏸ 보류 · ⬜ 미착수
 
-### Phase 0a: 레포 연결 + PRD + CLAUDE.md + 메모리
+### Phase -1: 사전 준비 (외부 리소스 설치) ⏸ 보류
+- [ ] 외부 MCP/Skills 추가 설치 — 기존 48개 로컬 스킬로 Phase 0 진행
+- [ ] `installed-resources.md`에 기록 완료 시 수행
+
+### Phase 0a: 레포 연결 + PRD + CLAUDE.md + 메모리 ✅ 완료
 - [x] `git init` + 원격 연결
 - [x] `.gitignore` 작성
 - [x] `docs/PRD.md` 작성 (본 문서)
-- [ ] `CLAUDE.md` 프로젝트 규칙 작성
-- [ ] 메모리 파일 4종 생성 (MEMORY, installed-resources, phase-status, decisions)
-- [ ] 첫 커밋 + push
+- [x] `CLAUDE.md` 프로젝트 규칙 작성
+- [x] 메모리 파일 4종 생성 (MEMORY, installed-resources, phase-status, decisions)
+- [x] 첫 커밋 + push
 
-### Phase 0b: 모노레포 스캐폴딩
-- [ ] `pnpm init` + `pnpm-workspace.yaml`
-- [ ] `tsconfig.base.json`
-- [ ] ESLint + Prettier flat config
-- [ ] 루트 `package.json` scripts
-- [ ] `README.md` 한국어 초안
-- [ ] MIT `LICENSE`
-- [ ] `.env.example`
+### Phase 0b: 모노레포 스캐폴딩 ✅ 완료
+- [x] `pnpm init` + `pnpm-workspace.yaml`
+- [x] `tsconfig.base.json`
+- [x] ESLint + Prettier flat config
+- [x] 루트 `package.json` scripts
+- [x] `README.md` 한국어 초안
+- [x] MIT `LICENSE`
+- [x] `.env.example`
 
-### Phase 0c: CI 워크플로우
-- [ ] `.github/workflows/ci.yml`
-- [ ] 스모크 테스트 통과
-- [ ] `phase-status.md` 갱신
-- [ ] README CI 배지 추가
+### Phase 0c: CI 워크플로우 ✅ 완료
+- [x] `.github/workflows/ci.yml`
+- [x] 스모크 테스트 통과
+- [x] `phase-status.md` 갱신
+- [x] README CI 배지 추가
 
-### Phase 1: Parser 구현
-- [ ] `packages/parser` 스캐폴딩
-- [ ] `types.ts`, `schemas.ts`
-- [ ] `parseSkill.ts` (gray-matter + 섹션 분할 + SHA-256 해시)
-- [ ] `utils/walk.ts` (fast-glob)
-- [ ] Vitest 테스트 (fixture 3건 이상)
-- [ ] CLI 진입점
-- [ ] 48개 중 45개+ 파싱 성공
+### Phase 1: Parser 구현 ✅ 완료 (48/48)
+- [x] `packages/parser` 스캐폴딩
+- [x] `types.ts`, `schemas.ts`
+- [x] `parseSkill.ts` (gray-matter + 섹션 분할 + SHA-256 해시)
+- [x] `utils/walk.ts` (fast-glob)
+- [x] Vitest 테스트 (fixture 3건 이상)
+- [x] CLI 진입점
+- [x] 48개 파싱 성공 (100%)
 
-### Phase 2: 한국어 해설 생성 (P0)
-- [ ] `packages/explainer` 스캐폴딩
-- [ ] `prompts/skillExplain.ko.ts`
-- [ ] `cache.ts` (해시 기반)
-- [ ] P0 10개 스킬 해설 생성 (Claude Code CLI 수동)
-- [ ] 출처 frontmatter 주입
-- [ ] 수동 리뷰 체크리스트 통과
+### Phase 2: 한국어 해설 생성 (P0) ✅ 완료
+- [x] `packages/explainer` 스캐폴딩
+- [x] `prompts/skillExplain.ko.ts`
+- [x] `cache.ts` (해시 기반)
+- [x] P0 10개 스킬 해설 생성 (Claude Code CLI 수동)
+- [x] 출처 frontmatter 주입
+- [x] 수동 리뷰 체크리스트 통과
 
-### Phase 3: VitePress 사이트 MVP
-- [ ] `apps/docs` VitePress 설치
-- [ ] `.vitepress/config.ts` 한국어 설정
-- [ ] `sync-content-to-docs.ts`
-- [ ] 한국어 홈 페이지
-- [ ] `SkillCard.vue`
-- [ ] 사이드바 자동 생성
-- [ ] 로컬 빌드 성공
+### Phase 3: VitePress 사이트 MVP ✅ 완료
+- [x] `apps/docs` VitePress 설치
+- [x] `.vitepress/config.ts` 한국어 설정
+- [x] `sync-content-to-docs.ts`
+- [x] 한국어 홈 페이지
+- [x] `SkillCard.vue` (CardGrid.vue + CardItem.vue)
+- [x] 사이드바 자동 생성
+- [x] 로컬 빌드 성공
 
-### Phase 4: GitHub Pages 배포
-- [ ] `.github/workflows/deploy-pages.yml`
-- [ ] VitePress `base: /Claude-Code-Study/`
-- [ ] Pages 설정
-- [ ] 배포 성공 확인 (curl 200)
-- [ ] README 배지 + 스크린샷 추가
+### Phase 4: GitHub Pages 배포 ✅ 완료
+- [x] `.github/workflows/deploy-pages.yml`
+- [x] VitePress `base: /Claude-Code-Study/`
+- [x] Pages 설정 (GitHub Actions)
+- [x] 배포 성공 확인
+- [x] README 배지 + 스크린샷 추가
 
-### Phase 5: P1 확장
-- [ ] parseCommand/parseAgent/parseMcp
-- [ ] 38개 스킬 해설 완성
-- [ ] 플러그인 32개 문서화
-- [ ] 영어 번역 + `content/en/`
-- [ ] VitePress `en` 로케일
+### Phase 5: P0→P1 콘텐츠 확장 ✅ 완료
+- [x] 5-A: 인프라 커밋 (VitePress 카드 UI + Mermaid 플러그인)
+- [x] 5-B: 48개 스킬 한국어 해설 완성
+- [x] 5-D: 비스킬 콘텐츠 21개 (mcp, hooks, agents, repos, use-cases, ecosystem)
+- [ ] parseCommand/parseAgent/parseMcp (P1 자동화 — 추후)
 
-### Phase 6: P2 확장
-- [ ] 외부 awesome 레포 메타 수집
+### Phase 6: 콘텐츠 품질 강화 ✅ 완료 (6-A~F)
+- [x] 6-A: CardGrid.vue + CardItem.vue + vitepress-plugin-mermaid + ecosystem 페이지
+- [x] 6-B: skills/index.md 48개 카드 + 7개 섹션 index.md 카드화 + 홈페이지 업데이트
+- [x] 6-C/D: 48개 스킬 7섹션 재구성 + source_url + mermaid
+- [x] 6-E: 비스킬 12개 7섹션 재구성 + mermaid
+- [x] 6-F: CLAUDE.md 7섹션+생태계 원칙 + README.md 갱신 + .gitignore 확장
+
+### Phase 7: 다국어 + MCP 강화 🔄 진행 중
+- [x] 7-A: MCP 서버 6개 설치 (context7, thinking, playwright, filesystem, memory, github)
+- [x] 7-B: VitePress i18n 인프라 (en 로케일, locales 블록, sidebar locale 지원)
+- [x] 7-C: sync-content-to-docs 다국어 확장 (LOCALES 배열)
+- [x] 7-D: deploy-pages.yml 영어 경로(`content/en/**`) 추가
+- [x] 7-G: 빈 섹션 콘텐츠 (my-collection 5개 + prompts 6개)
+- [x] 7-H: sitemap + robots.txt + PRD 체크리스트 동기화
+- [ ] 7-E: 영어 번역 — Skills 48개
+- [ ] 7-F: 영어 번역 — 비스킬 32개
+
+### Phase 8: P2 확장 (예정)
 - [ ] 일본어 번역 + `content/ja/`
 - [ ] `packages/cli` 추출
 - [ ] npm 배포
+- [ ] 외부 레포 메타 수집 (awesome 리스트)
 
 ## 9. 위험 요소 및 대응
 
